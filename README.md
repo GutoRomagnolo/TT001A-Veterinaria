@@ -1,3 +1,3 @@
 # TT001A-Veterinaria
 
-<img src="https://user-images.githubusercontent.com/80481752/186041755-cefa4c47-9e63-40c6-8f40-618dec5a6466.png"/>
+<img src="https://user-images.githubusercontent.com/80481752/186041841-6c1a318f-77f0-4fb3-a989-cabdf2d4dbb9.png"/>
