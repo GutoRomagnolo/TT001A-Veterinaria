@@ -9,11 +9,13 @@ public class Customer {
     private String address;
     private String postal_code;
     private String complement;
+    private String phone;
 
-    public Customer(int id, int number, String name, String email, String document_number, String address, String postal_code, String complement) {
+    public Customer(int id, int number, String name, String email, String document_number, String address, String postal_code, String complement, String phone) {
         this.id = id;
         this.number = number;
         this.name = name;
+        this.phone = phone;
         this.email = email;
         this.document_number = document_number;
         this.address = address;
@@ -49,11 +51,11 @@ public class Customer {
         this.email = email;
     }
 
-    public String getDocument_number() {
+    public String getDocumentNumber() {
         return document_number;
     }
 
-    public void setDocument_number(String document_number) {
+    public void setDocumentNumber(String document_number) {
         this.document_number = document_number;
     }
 
@@ -65,11 +67,11 @@ public class Customer {
         this.address = address;
     }
 
-    public String getPostal_code() {
+    public String getPostalCode() {
         return postal_code;
     }
 
-    public void setPostal_code(String postal_code) {
+    public void setPostalCode(String postal_code) {
         this.postal_code = postal_code;
     }
 
@@ -79,5 +81,13 @@ public class Customer {
 
     public void setComplement(String complement) {
         this.complement = complement;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
