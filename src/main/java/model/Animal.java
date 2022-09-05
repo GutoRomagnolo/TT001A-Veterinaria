@@ -4,11 +4,11 @@ public class Animal {
     private final int id;
     private String birthday;
     private String name;
-    private String gender;
+    private int gender;
     private int specie_id;
     private int customer_id;
 
-    public Animal(int id, String birthday, String name, String gender, int specie_id, int customer_id) {
+    public Animal(int id, String birthday, String name, int gender, int specie_id, int customer_id) {
         this.id = id;
         this.birthday = birthday;
         this.name = name;
@@ -43,11 +43,11 @@ public class Animal {
         this.name = name;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 }
