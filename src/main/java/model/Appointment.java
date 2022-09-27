@@ -14,7 +14,8 @@ public class Appointment {
     String symptoms,
     String diagnosis,
     int treatment_id,
-    int veterinary_id
+    int veterinary_id,
+    int animal_id
   ) {
     this.id = id;
     this.date = date;
@@ -22,6 +23,7 @@ public class Appointment {
     this.diagnosis = diagnosis;
     this.treatment_id = treatment_id;
     this.veterinary_id = veterinary_id;
+    this.animal_id = animal_id;
   }
 
   public int getId() {
@@ -34,6 +36,10 @@ public class Appointment {
 
   public int getVeterinaryId() {
     return veterinary_id;
+  }
+
+  public int getAnimalId() {
+    return animal_id;
   }
 
   public String getDate() {

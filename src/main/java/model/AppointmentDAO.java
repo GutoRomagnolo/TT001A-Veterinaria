@@ -25,7 +25,8 @@ public class AppointmentDAO extends DAO {
     String symptoms,
     String diagnosis,
     int treatment_id,
-    int veterinary_id
+    int veterinary_id,
+    int animal_id
   ) {
     try {
       PreparedStatement statement;
@@ -33,13 +34,14 @@ public class AppointmentDAO extends DAO {
         DAO
           .getConnection()
           .prepareStatement(
-            "INSERT INTO appointment (date, symptoms, diagnosis, treatment_id, veterinary_id) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO appointment (date, symptoms, diagnosis, treatment_id, veterinary_id, animal_id) VALUES (?, ?, ?, ?, ?)"
           );
       statement.setString(1, date);
       statement.setString(2, symptoms);
       statement.setString(3, diagnosis);
       statement.setInt(4, treatment_id);
       statement.setInt(5, veterinary_id);
+      statement.setInt(6, animal_id);
       executeUpdate(statement);
     } catch (SQLException exception) {
       Logger
@@ -71,7 +73,8 @@ public class AppointmentDAO extends DAO {
           result_set.getString("symptoms"),
           result_set.getString("diagnosis"),
           result_set.getInt("treatment_id"),
-          result_set.getInt("veterinary_id")
+          result_set.getInt("veterinary_id"),
+          result_set.getInt("animal_id")
         );
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
@@ -101,8 +104,8 @@ public class AppointmentDAO extends DAO {
 
   public List retrieveLast() {
     return this.retrieve(
-        "SELECT * FROM appointment WHERE id = " + lastId("appointment", "id")
-      );
+      "SELECT * FROM appointment WHERE id = " + lastId("appointment", "id")
+    );
   }
 
   public Appointment retrieveByID(int id) {
@@ -114,14 +117,20 @@ public class AppointmentDAO extends DAO {
 
   public List retrieveByTreatmentId(int id) {
     return this.retrieve(
-        "SELECT * FROM appointment WHERE treatment_id = " + id
-      );
+      "SELECT * FROM appointment WHERE treatment_id = " + id
+    );
   }
 
   public List retrieveByVeterinaryId(int id) {
     return this.retrieve(
-        "SELECT * FROM appointment WHERE veterinary_id = " + id
-      );
+      "SELECT * FROM appointment WHERE veterinary_id = " + id
+    );
+  }
+
+  public List retrieveByAnimalId(int id) {
+    return this.retrieve(
+      "SELECT * FROM appointment WHERE animal_id = " + id
+    );
   }
 
   public void update(Appointment appointment) {
@@ -131,14 +140,15 @@ public class AppointmentDAO extends DAO {
         DAO
           .getConnection()
           .prepareStatement(
-            "UPDATE appointment SET date = ?, symptoms = ?, diagnosis = ?, treatment_id = ?, veterinary_id = ? WHERE id = ?"
+            "UPDATE appointment SET date = ?, symptoms = ?, diagnosis = ?, treatment_id = ?, veterinary_id = ?, animal_id = ? WHERE id = ?"
           );
       statement.setString(1, appointment.getDate());
       statement.setString(2, appointment.getSymptoms());
       statement.setString(3, appointment.getDiagnosis());
       statement.setInt(4, appointment.getTreatmentId());
       statement.setInt(5, appointment.getVeterinaryId());
-      statement.setInt(6, appointment.getId());
+      statement.setInt(6, appointment.getAnimalId());
+      statement.setInt(7, appointment.getId());
       executeUpdate(statement);
     } catch (SQLException e) {
       System.err.println("Exception: " + e.getMessage());
