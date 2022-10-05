@@ -53,7 +53,7 @@ public class AnimalDAO extends DAO {
   public boolean isLastEmpty() {
     Animal lastAnimal = this.retrieveByID(lastId("animal", "id"));
     if (lastAnimal != null) {
-      return lastAnimal.getName().isBlank();
+      return lastAnimal.getName().trim().isEmpty();
     }
 
     return false;
@@ -131,7 +131,7 @@ public class AnimalDAO extends DAO {
             "UPDATE animal SET name = ?, birthday = ?, gender = ?, specie_id = ?, customer_id = ? WHERE id = ?"
           );
       statement.setString(1, animal.getName());
-      statement.setString(2, animal.getBirthdate());
+      statement.setString(2, animal.getBirthday());
       statement.setInt(3, animal.getGender());
       statement.setInt(4, animal.getSpecieId());
       statement.setInt(5, animal.getCustomerId());

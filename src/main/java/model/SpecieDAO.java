@@ -41,7 +41,7 @@ public class SpecieDAO extends DAO {
   public boolean isLastEmpty() {
     Specie lastSpecie = this.retrieveByID(lastId("specie", "id"));
     if (lastSpecie != null) {
-      return lastSpecie.getName().isBlank();
+      return lastSpecie.getName().trim().isEmpty();
     }
 
     return false;

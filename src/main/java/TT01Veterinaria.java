@@ -5,7 +5,7 @@ public class TT01Veterinaria {
   public static void main(String args[]) {
     System.out.println("List customers");
 
-    List<Customer> customers = customersDAO.getInstance().retrieveAll();
+    List<Customer> customers = CustomerDAO.getInstance().retrieveAll();
 
     for (Customer customer : customers) {
       System.out.println(

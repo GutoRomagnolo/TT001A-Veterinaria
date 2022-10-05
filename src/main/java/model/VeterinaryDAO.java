@@ -28,7 +28,7 @@ public class VeterinaryDAO extends DAO {
     int number,
     String postal_code,
     String complement,
-    String phone,
+    String phone
   ) {
     try {
       PreparedStatement statement;
@@ -59,7 +59,7 @@ public class VeterinaryDAO extends DAO {
   public boolean isLastEmpty() {
     Veterinary lastVeterinary = this.retrieveByID(lastId("veterinary", "id"));
     if (lastVeterinary != null) {
-      return lastVeterinary.getName().isBlank();
+      return lastVeterinary.getName().trim().isEmpty();
     }
 
     return false;

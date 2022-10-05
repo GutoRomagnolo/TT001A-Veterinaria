@@ -56,7 +56,7 @@ public class AppointmentDAO extends DAO {
     Appointment lastAppointment =
       this.retrieveByID(lastId("appointment", "id"));
     if (lastAppointment != null) {
-      return lastAppointment.getDate().isBlank();
+      return lastAppointment.getDate().trim().isEmpty();
     }
 
     return false;

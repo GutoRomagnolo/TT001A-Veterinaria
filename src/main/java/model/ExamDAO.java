@@ -52,7 +52,7 @@ public class ExamDAO extends DAO {
     Exam lastExam =
       this.retrieveByID(lastId("exam", "id"));
     if (lastExam != null) {
-      return lastExam.getDescription().isBlank();
+      return lastExam.getDescription().trim().isEmpty();
     }
 
     return false;

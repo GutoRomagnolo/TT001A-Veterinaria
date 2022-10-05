@@ -21,14 +21,14 @@ public class CustomerDAO extends DAO {
   }
 
   public Customer create(
-    String name,
-    String document_number,
-    String phone,
-    String email,
-    String postal_code,
-    String address,
     int number,
+    String name,
+    String email,
+    String document_number,
+    String address,
+    String postal_code,
     String complement,
+    String phone
   ) {
     try {
       PreparedStatement statement;
@@ -38,14 +38,14 @@ public class CustomerDAO extends DAO {
           .prepareStatement(
             "INSERT INTO customer (name, document_number, phone, email, postal_code, address, number, complement) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
           );
-      statement.setString(1, name);
-      statement.setString(2, document_number);
-      statement.setString(3, phone);
-      statement.setString(4, email);
-      statement.setString(5, postal_code);
-      statement.setString(6, address);
-      statement.setInt(7, number);
-      statement.setString(8, complement);
+      statement.setInt(1, number);
+      statement.setString(2, name);
+      statement.setString(3, email);
+      statement.setString(4, document_number);
+      statement.setString(5, address);
+      statement.setString(6, postal_code);  
+      statement.setString(7, complement);
+      statement.setString(8, phone);
       executeUpdate(statement);
     } catch (SQLException exception) {
       Logger
@@ -59,7 +59,7 @@ public class CustomerDAO extends DAO {
   public boolean isLastEmpty() {
     Customer lastCustomer = this.retrieveByID(lastId("customer", "id"));
     if (lastCustomer != null) {
-      return lastCustomer.getName().isBlank();
+      return lastCustomer.getName().trim().isEmpty();
     }
 
     return false;
@@ -72,14 +72,14 @@ public class CustomerDAO extends DAO {
       customer =
         new Customer(
           result_set.getInt("id"),
-          result_set.getString("name"),
-          result_set.getString("document_number"),
-          result_set.getString("phone"),
-          result_set.getString("email"),
-          result_set.getString("postal_code"),
-          result_set.getString("address"),
           result_set.getInt("number"),
-          result_set.getString("complement")
+          result_set.getString("name"),
+          result_set.getString("email"),
+          result_set.getString("document_number"),
+          result_set.getString("address"),
+          result_set.getString("postal_code"),
+          result_set.getString("complement"),
+          result_set.getString("phone")
         );
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());

@@ -103,7 +103,7 @@ public abstract class DAO {
             "specie_id INTEGER, \n" +
             "customer_id INTEGER, \n" +
             "FOREIGN KEY (specie_id) REFERENCES specie(id), \n" +
-            "FOREIGN KEY (customer_id) REFERENCES customer(id)); \n" + 
+            "FOREIGN KEY (customer_id) REFERENCES customer(id)); \n"
           );
 
       executeUpdate(stmt);
@@ -143,7 +143,7 @@ public abstract class DAO {
             "name VARCHAR, \n" +
             "history VARCHAR, \n" +
             "initial_date TEXT, \n" +
-            "animal_id INTEGER); \n" +
+            "animal_id INTEGER); \n"
           );
 
       executeUpdate(stmt);
@@ -157,7 +157,7 @@ public abstract class DAO {
             "symptoms VARCHAR, \n" +
             "id_veterinary INTEGER, \n" +
             "id_treatment INTEGER, \n" +
-            "id_animal INTEGER); \n" +
+            "id_animal INTEGER); \n"
           );
 
       executeUpdate(stmt);
@@ -170,7 +170,7 @@ public abstract class DAO {
             "name VARCHAR, \n" +
             "description VARCHAR, \n" +
             "result VARCHAR, \n" +
-            "appointment_id INTEGER); \n" +
+            "appointment_id INTEGER); \n"
           );
 
       executeUpdate(stmt);

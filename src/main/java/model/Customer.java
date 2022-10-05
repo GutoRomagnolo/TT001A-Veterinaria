@@ -25,12 +25,12 @@ public class Customer {
     this.id = id;
     this.number = number;
     this.name = name;
-    this.phone = phone;
     this.email = email;
     this.document_number = document_number;
     this.address = address;
     this.postal_code = postal_code;
     this.complement = complement;
+    this.phone = phone;
   }
 
   public int getId() {

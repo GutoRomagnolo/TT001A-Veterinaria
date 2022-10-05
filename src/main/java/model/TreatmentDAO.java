@@ -53,7 +53,7 @@ public class TreatmentDAO extends DAO {
   public boolean isLastEmpty() {
     Treatment lastTreatment = this.retrieveByID(lastId("treatment", "id"));
     if (lastTreatment != null) {
-      return lastTreatment.getInitialDate().isBlank();
+      return lastTreatment.getInitialDate().trim().isEmpty();
     }
 
     return false;

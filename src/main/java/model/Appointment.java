@@ -5,8 +5,9 @@ public class Appointment {
   private String date;
   private String symptoms;
   private String diagnosis;
-  private int treatment_id;
-  private int veterinary_id;
+  private final int treatment_id;
+  private final int veterinary_id;
+  private final int animal_id;
 
   public Appointment(
     int id,

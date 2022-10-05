@@ -6,7 +6,7 @@ public class Veterinary {
   private String document_number;
   private String email;
   private String address;
-  private Int number;
+  private int number;
   private String postal_code;
   private String complement;
   private String phone;
@@ -15,9 +15,9 @@ public class Veterinary {
     int id,
     String name,
     String document_number,
-    String email;
+    String email,
     String address,
-    Int number;
+    int number,
     String postal_code,
     String complement,
     String phone
@@ -69,11 +69,11 @@ public class Veterinary {
     this.address = address;
   }
 
-  public Int getNumber() {
+  public int getNumber() {
     return number;
   }
 
-  public void setNumber(Int number) {
+  public void setNumber(int number) {
     this.number = number;
   }
 
