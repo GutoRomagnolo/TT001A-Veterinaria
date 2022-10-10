@@ -21,11 +21,11 @@ public class CustomerDAO extends DAO {
   }
 
   public Customer create(
-    int number,
     String name,
     String email,
     String document_number,
     String address,
+    int number,
     String postal_code,
     String complement,
     String phone
@@ -36,13 +36,13 @@ public class CustomerDAO extends DAO {
         DAO
           .getConnection()
           .prepareStatement(
-            "INSERT INTO customer (name, document_number, phone, email, postal_code, address, number, complement) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO customer (name, email, document_number, address, number, postal_code, complement, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
           );
-      statement.setInt(1, number);
-      statement.setString(2, name);
-      statement.setString(3, email);
-      statement.setString(4, document_number);
-      statement.setString(5, address);
+      statement.setString(1, name);
+      statement.setString(2, email);
+      statement.setString(3, document_number);
+      statement.setString(4, address);
+      statement.setInt(5, number);
       statement.setString(6, postal_code);  
       statement.setString(7, complement);
       statement.setString(8, phone);
@@ -53,11 +53,11 @@ public class CustomerDAO extends DAO {
         .log(Level.SEVERE, null, exception);
     }
 
-    return this.retrieveByID(lastId("customer", "id"));
+    return this.retrieveCustomerByID(lastId("customer", "id"));
   }
 
   public boolean isLastEmpty() {
-    Customer lastCustomer = this.retrieveByID(lastId("customer", "id"));
+    Customer lastCustomer = this.retrieveCustomerByID(lastId("customer", "id"));
     if (lastCustomer != null) {
       return lastCustomer.getName().trim().isEmpty();
     }
@@ -72,11 +72,11 @@ public class CustomerDAO extends DAO {
       customer =
         new Customer(
           result_set.getInt("id"),
-          result_set.getInt("number"),
           result_set.getString("name"),
           result_set.getString("email"),
           result_set.getString("document_number"),
           result_set.getString("address"),
+          result_set.getInt("number"),    
           result_set.getString("postal_code"),
           result_set.getString("complement"),
           result_set.getString("phone")
@@ -88,7 +88,7 @@ public class CustomerDAO extends DAO {
     return customer;
   }
 
-  public List retrieve(String query) {
+  public List retrieveCustomer(String query) {
     List<Customer> customers = new ArrayList();
     ResultSet result_set = getResultSet(query);
 
@@ -103,46 +103,46 @@ public class CustomerDAO extends DAO {
     return customers;
   }
 
-  public List retrieveAll() {
-    return this.retrieve("SELECT * FROM customer");
+  public List retrieveAllCustomers() {
+    return this.retrieveCustomer("SELECT * FROM customer");
   }
 
-  public List retrieveLast() {
-    return this.retrieve(
+  public List retrieveLastCustomer() {
+    return this.retrieveCustomer(
         "SELECT * FROM customer WHERE id = " + lastId("customer", "id")
       );
   }
 
-  public Customer retrieveByID(int id) {
+  public Customer retrieveCustomerByID(int id) {
     List<Customer> customers =
-      this.retrieve("SELECT * FROM customer WHERE id = " + id);
+      this.retrieveCustomer("SELECT * FROM customer WHERE id = " + id);
 
     return (customers.isEmpty() ? null : customers.get(0));
   }
 
-  public List retrieveBySimilarName(String name) {
-    return this.retrieve(
+  public List retrieveCustomerBySimilarName(String name) {
+    return this.retrieveCustomer(
         "SELECT * FROM customer WHERE name LIKE '" + name + "'%"
       );
   }
 
-  public void update(Customer customer) {
+  public void updateCustomer(Customer customer) {
     try {
       PreparedStatement statement;
       statement =
         DAO
           .getConnection()
           .prepareStatement(
-            "UPDATE customer SET name = ?, document_number = ?, phone = ?, email = ?, postal_code = ?, address = ?, number = ?, complement = ? WHERE id = ?"
+            "UPDATE customer SET name = ?, document_number = ?, email = ?, postal_code = ?, address = ?, number = ?, complement = ?, phone = ? WHERE id = ?"
           );
       statement.setString(1, customer.getName());
       statement.setString(2, customer.getDocumentNumber());
-      statement.setString(3, customer.getPhone());
       statement.setString(4, customer.getEmail());
       statement.setString(5, customer.getPostalCode());
       statement.setString(6, customer.getAddress());
       statement.setInt(7, customer.getNumber());
       statement.setString(8, customer.getComplement());
+      statement.setString(3, customer.getPhone());
       statement.setInt(9, customer.getId());
       executeUpdate(statement);
     } catch (SQLException e) {
@@ -150,7 +150,7 @@ public class CustomerDAO extends DAO {
     }
   }
 
-  public void delete(Customer customer) {
+  public void deleteCustomer(Customer customer) {
     try {
       PreparedStatement statement;
       statement =

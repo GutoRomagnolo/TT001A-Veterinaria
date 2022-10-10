@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class DAO {
-  public static final String DBURL = "jdbc:sqlite:vet2021.db";
+  public static final String DBURL = "jdbc:sqlite:basdasdsa.db";
   private static Connection con;
   protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
     "dd/MM/yyyy"
@@ -141,8 +141,9 @@ public abstract class DAO {
             "CREATE TABLE IF NOT EXISTS treatment( \n" +
             "id INTEGER PRIMARY KEY, \n" +
             "name VARCHAR, \n" +
-            "history VARCHAR, \n" +
-            "initial_date TEXT, \n" +
+            "history TEXT, \n" +
+            "initial_date DATE, \n" +
+            "final_date DATE, \n" +
             "animal_id INTEGER); \n"
           );
 
@@ -155,9 +156,10 @@ public abstract class DAO {
             "id INTEGER PRIMARY KEY, \n" +
             "date DATE, \n" +
             "symptoms VARCHAR, \n" +
-            "id_veterinary INTEGER, \n" +
-            "id_treatment INTEGER, \n" +
-            "id_animal INTEGER); \n"
+            "diagnosis VARCHAR, \n" +
+            "veterinary_id INTEGER, \n" +
+            "treatment_id INTEGER, \n" +
+            "animal_id INTEGER); \n"
           );
 
       executeUpdate(stmt);
@@ -174,16 +176,9 @@ public abstract class DAO {
           );
 
       executeUpdate(stmt);
-      stmt =
-        DAO
-          .getConnection()
-          .prepareStatement(
-            "INSERT OR IGNORE INTO specie (id, name) VALUES (1, 'Cachorro')"
-          );
-      executeUpdate(stmt);
       return true;
-    } catch (SQLException ex) {
-      Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException exception) {
+      Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, exception);
     }
     return false;
   }

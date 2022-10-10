@@ -34,7 +34,7 @@ public class AppointmentDAO extends DAO {
         DAO
           .getConnection()
           .prepareStatement(
-            "INSERT INTO appointment (date, symptoms, diagnosis, treatment_id, veterinary_id, animal_id) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO appointment (date, symptoms, diagnosis, treatment_id, veterinary_id, animal_id) VALUES (?, ?, ?, ?, ?, ?)"
           );
       statement.setString(1, date);
       statement.setString(2, symptoms);

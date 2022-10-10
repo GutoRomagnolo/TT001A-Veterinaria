@@ -2,24 +2,26 @@ package model;
 
 public class Animal {
   private final int id;
-  private String birthday;
   private String name;
+  private String birthday;
   private int gender;
   private int specie_id;
   private int customer_id;
 
   public Animal(
     int id,
-    String birthday,
     String name,
+    String birthday,
     int gender,
     int specie_id,
     int customer_id
   ) {
     this.id = id;
-    this.birthday = birthday;
     this.name = name;
+    this.birthday = birthday;
     this.gender = gender;
+    this.specie_id = specie_id;
+    this.customer_id = customer_id;
   }
 
   public int getSpecieId() {

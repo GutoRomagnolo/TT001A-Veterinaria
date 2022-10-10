@@ -2,91 +2,114 @@ import java.util.List;
 import model.*;
 
 public class TT01Veterinaria {
+
   public static void main(String args[]) {
-    System.out.println("List customers");
-
-    List<Customer> customers = CustomerDAO.getInstance().retrieveAll();
-
-    for (Customer customer : customers) {
-      System.out.println(
-        "id=" + customer.getId() + ", name=" + customer.getName()
+    System.out.println("Register new customer:");
+    CustomerDAO
+      .getInstance()
+      .create(
+        "Gustavo Romagnolo",
+        "guto@teste.com.br",
+        "563498862",
+        "Rua das cerejeiras",
+        82,
+        "12459732",
+        "Apto 32",
+        "17983738293"
       );
-    }
 
-    System.out.println("List animals from customer 2");
+    System.out.println("Listing new customer");
+    List<Customer> customers = CustomerDAO.getInstance().retrieveAllCustomers();
 
-    List<Animal> animals = AnimalDAO.getInstance().retrieveAnimalsByID(2);
+    customers.forEach(customer -> {
+      System.out.println("Customer ID is: " + customer.getId() + " and his name: " + customer.getName());
+    });
 
-    for (Animal animal : animals) {
-      System.out.println(
-        "id=" +
-        animal.getId() +
-        ", name=" +
-        animal.getName() +
-        ", customer_id=" +
-        animal.getCustomerId()
-      );
-    }
+    System.out.println("Register new animal");
+    AnimalDAO.getInstance().create("Gragas", "22/04/2020", 1, 2, 1);
 
-    System.out.println("List animal especies");
+    System.out.println("Listing animals from customers");
+    List<Animal> animals = AnimalDAO.getInstance().retrieveAnimalsByID(1);
 
+    animals.forEach(animal -> {
+      System.out.println("Animal ID is: " + animal.getId() + ", name is: " + animal.getName() + " and ID of his customer is: " + animal.getCustomerId());
+    });
+
+    System.out.println("Register new specie");
+    SpecieDAO.getInstance().create("Calopsita");
+
+    System.out.println("Listing animal especies");
     List<Specie> species = SpecieDAO.getInstance().retrieveAll();
 
-    for (Specie specie : species) {
-      System.out.println("id=" + specie.getId() + ", name=" + specie.getName());
-    }
+    species.forEach(specie -> {
+      System.out.println("Specie ID is: " + specie.getId() + " and his name is: " + specie.getName());
+    });
 
-    System.out.println("List veterinary");
+    System.out.println("Register new veterinary");
+    VeterinaryDAO.getInstance().create(
+      "Gabrielle Dourado", 
+      "012987563", 
+      "gabid@teste.com.br", 
+      "Rua Alessandro Cazelo, Beteloncio",  
+      93, 
+      "1596320", 
+      "Casa 32", 
+      "19984738238"
+    );
 
+    System.out.println("Listing veterinarys");
     List<Veterinary> veterinarians = VeterinaryDAO.getInstance().retrieveAll();
 
-    for (Veterinary veterinary : veterinarians) {
-      System.out.println(
-        "document_number=" +
-        veterinary.getDocumentNumber() +
-        ", name=" +
-        veterinary.getName()
-      );
-    }
+    veterinarians.forEach(veterinary -> {
+      System.out.println("Veterinary document number is: " + veterinary.getDocumentNumber() + " and his name is: " + veterinary.getName());
+    });
 
-    System.out.println("List treatments from animal 1");
+    System.out.println("Register new treatment");
+    TreatmentDAO.getInstance().create(
+      "Tratamento de bico", 
+      "Bico com problemas de cálcio. Receitado medicamentos contendo cálcio.", 
+      "05/10/2022", 
+      "12/11/2022", 
+      1
+    );
 
-    List<Treatment> treatments = TreatmentDAO
-      .getInstance()
-      .retrieveByAnimalId(1);
+    System.out.println("Listing treatments from animal 1");
+    List<Treatment> treatments = TreatmentDAO.getInstance().retrieveByAnimalId(1);
 
-    for (Treatment treatment : treatments) {
-      System.out.println(
-        "animal_id=" +
-        treatment.getAnimalId() +
-        ", initial_date=" +
-        treatment.getInitialDate()
-      );
-    }
+    treatments.forEach(treatment -> {
+      System.out.println("Treatment's animal ID is: " + treatment.getAnimalId() + " and his initial date is: " + treatment.getInitialDate());
+    });
 
-    System.out.println("List appointments");
+    System.out.println("Register new appointment");
+    AppointmentDAO.getInstance().create(
+      "05/10/2022", 
+      "Calopsita com dificuldade para comer, ponta do bico translúcida e fraqueza", 
+      "Problema de cálcio", 
+      1, 
+      1,
+      1
+    );
 
+    System.out.println("Listing appointments");
     List<Appointment> appointments = AppointmentDAO.getInstance().retrieveAll();
 
-    for (Appointment appointment : appointments) {
-      System.out.println(
-        "id=" +
-        appointment.getId() +
-        ", date=" +
-        appointment.getDate() +
-        ", diagnosis=" +
-        appointment.getDiagnosis()
-      );
-    }
+    appointments.forEach(appointment -> {
+      System.out.println("Appointment ID is: " + appointment.getId() + ", his date is: " + appointment.getDate() + " and diagnosis is: " + appointment.getDiagnosis());
+    });
+
+    System.out.println("Register new exam");
+    ExamDAO.getInstance().create(
+      "Exame de sangue", 
+      "Coletar índices sanguíneos", 
+      "Baixa taxa de cálcio no sangue", 
+      1
+    );
 
     System.out.println("List exams");
-
     List<Exam> exams = ExamDAO.getInstance().retrieveAll();
 
-    for (Exam exam : exams) {
-      System.out.println(
-        "id=" + exam.getId() + ", description=" + exam.getDescription()
-      );
-    }
+    exams.forEach(exam -> {
+      System.out.println("Exam ID is: " + exam.getId() + " and his description is: " + exam.getDescription());
+    });
   }
 }

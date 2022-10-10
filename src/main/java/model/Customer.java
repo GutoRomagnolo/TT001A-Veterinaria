@@ -2,32 +2,32 @@ package model;
 
 public class Customer {
   private final int id;
-  private int number;
   private String name;
   private String email;
   private String document_number;
   private String address;
+  private int number;
   private String postal_code;
   private String complement;
   private String phone;
 
   public Customer(
     int id,
-    int number,
     String name,
     String email,
     String document_number,
     String address,
+    int number,
     String postal_code,
     String complement,
     String phone
   ) {
     this.id = id;
-    this.number = number;
     this.name = name;
     this.email = email;
     this.document_number = document_number;
     this.address = address;
+    this.number = number;
     this.postal_code = postal_code;
     this.complement = complement;
     this.phone = phone;
@@ -35,14 +35,6 @@ public class Customer {
 
   public int getId() {
     return id;
-  }
-
-  public int getNumber() {
-    return number;
-  }
-
-  public void setNumber(int number) {
-    this.number = number;
   }
 
   public String getName() {
@@ -75,6 +67,14 @@ public class Customer {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public int getNumber() {
+    return number;
+  }
+
+  public void setNumber(int number) {
+    this.number = number;
   }
 
   public String getPostalCode() {

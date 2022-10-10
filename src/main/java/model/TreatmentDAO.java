@@ -134,10 +134,12 @@ public class TreatmentDAO extends DAO {
           .prepareStatement(
             "UPDATE treatment SET name = ?, history = ?, initial_date = ?, final_date = ?, animal_id = ? WHERE id = ?"
           );
-      statement.setString(1, treatment.getInitialDate());
-      statement.setString(2, treatment.getFinalDate());
-      statement.setInt(3, treatment.getAnimalId());
-      statement.setInt(4, treatment.getId());
+      statement.setString(1, treatment.getName());    
+      statement.setString(2, treatment.getHistory());    
+      statement.setString(3, treatment.getInitialDate());
+      statement.setString(4, treatment.getFinalDate());
+      statement.setInt(5, treatment.getAnimalId());
+      statement.setInt(6, treatment.getId());
       executeUpdate(statement);
     } catch (SQLException e) {
       System.err.println("Exception: " + e.getMessage());
