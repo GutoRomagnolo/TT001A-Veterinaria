@@ -1,12 +1,12 @@
 package view;
 
-import model.Exam;
 import java.util.List;
+import model.Exam;
 
 public class ExamTableModel extends GenericTableModel {
 
   public ExamTableModel(List vData) {
-    super(vData, new String[] { "ID", "Descrição", "Consulta" });
+    super(vData, new String[] { "ID", "Description", "Appointment" });
   }
 
   @Override

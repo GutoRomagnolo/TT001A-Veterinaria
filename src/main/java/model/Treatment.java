@@ -6,7 +6,7 @@ public class Treatment {
   private String history;
   private String initial_date;
   private String final_date;
-  private int animal_id;
+  private final int animal_id;
 
   public Treatment(
     int id,

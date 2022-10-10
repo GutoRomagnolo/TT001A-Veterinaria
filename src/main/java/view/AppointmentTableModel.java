@@ -1,70 +1,61 @@
 package view;
 
-import model.Appointment;
-import model.Veterinary;
-import model.VeterinaryDAO;
 import java.util.List;
+import model.Appointment;
 
 public class AppointmentTableModel extends GenericTableModel {
-
   public AppointmentTableModel(List vData) {
-    super(
-      vData,
-      new String[] {
-        "ID",
-        "Data da consulta",
-        "Diagnóstico",
-        "Tratamento",
-        "Veterinário",
+    super(vData, new String[]{"Date", "Symptoms", "Diagnosis"});
+  }
+
+  @Override
+  public Class<?> getColumnClass(int columnIndex) {
+    switch (columnIndex) {
+      case 0 -> {
+        return String.class;
       }
-    );
-  }
-
-  @Override
-  public Class<?> getColumnClass(int column_index) {
-    switch (column_index) {
-      case 0:
-        return Integer.class;
-      case 1:
+      case 1 -> {
         return String.class;
-      case 2:
+      }
+      case 2 -> {
         return String.class;
-      case 3:
-        return String.class;
-      case 4:
-        return String.class;
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      }
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
     }
   }
 
   @Override
-  public Object getValueAt(int row_index, int column_index) {
-    Appointment appointment = (Appointment) vData.get(
-      row_index
-    );
-
-    switch (column_index) {
-      case 0:
-        return appointment.getId();
-      case 1:
+  public Object getValueAt(int rowIndex, int columnIndex) {
+    Appointment appointment = (Appointment) vData.get(rowIndex);
+    
+    switch (columnIndex) {
+      case 0 -> {
         return appointment.getDate();
-      case 2:
+      }
+      case 1 -> {
+        return appointment.getSymptoms();
+      }
+      case 2 -> {
         return appointment.getDiagnosis();
-      case 3:
-        return appointment.getTreatmentId();
-      case 4:
-        Veterinary veterinary = VeterinaryDAO
-          .getInstance()
-          .retrieveByID(appointment.getVeterinaryId());
-        return veterinary.getName();
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      }
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
     }
   }
 
   @Override
-  public boolean isCellEditable(int row_index, int column_index) {
-    return false;
+  public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    Appointment appointment = (Appointment) vData.get(rowIndex);
+    switch (columnIndex) {
+      case 0 -> appointment.setDate(((String) aValue));
+      case 1 -> appointment.setSymptoms((String) aValue);
+      case 2 -> appointment.setDiagnosis((String) aValue);
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
+    }
   }
+  
+  @Override
+  public boolean isCellEditable(int rowIndex, int columnIndex) {
+    return true;
+  } 
+  
 }

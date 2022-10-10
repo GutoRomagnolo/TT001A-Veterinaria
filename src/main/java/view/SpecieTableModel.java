@@ -12,12 +12,13 @@ public class SpecieTableModel extends GenericTableModel {
   @Override
   public Class<?> getColumnClass(int column_index) {
     switch (column_index) {
-      case 0:
-        return Integer.class;
-      case 1:
-        return String.class;
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      case 0 -> {
+         return Integer.class;
+        }
+      case 1 -> {
+         return String.class;
+        }
+      default -> throw new IndexOutOfBoundsException("column_index out of bounds");
     }
   }
 
@@ -26,12 +27,13 @@ public class SpecieTableModel extends GenericTableModel {
     Specie specie = (Specie) vData.get(row_index);
 
     switch (column_index) {
-      case 0:
-        return specie.getId();
-      case 1:
-        return specie.getName();
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      case 0 -> {
+         return specie.getId();
+        }
+      case 1 -> {
+         return specie.getName();
+        }
+      default -> throw new IndexOutOfBoundsException("column_index out of bounds");
     }
   }
 

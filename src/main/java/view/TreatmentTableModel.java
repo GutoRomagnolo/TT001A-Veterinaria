@@ -1,58 +1,68 @@
 package view;
 
-import model.Animal;
-import model.AnimalDAO;
-import model.Treatment;
 import java.util.List;
+import model.Treatment;
 
 public class TreatmentTableModel extends GenericTableModel {
 
   public TreatmentTableModel(List vData) {
-    super(
-      vData,
-      new String[] { "ID", "Data de início", "Data final", "Paciente" }
-    );
+    super(vData, new String[]{"Name", "Start date", "Final date", "History"});
   }
 
   @Override
-  public Class<?> getColumnClass(int column_index) {
-    switch (column_index) {
-      case 0:
-        return Integer.class;
-      case 1:
+  public Class<?> getColumnClass(int columnIndex) {  
+    switch (columnIndex) {
+      case 0 -> {
         return String.class;
-      case 2:
+      }
+      case 1 -> {
         return String.class;
-      case 3:
+      }
+      case 2 -> {
         return String.class;
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      }
+      case 3 -> {
+        return String.class;
+      }
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
     }
   }
 
   @Override
-  public Object getValueAt(int row_index, int column_index) {
-    Treatment treatment = (Treatment) vData.get(row_index);
-
-    switch (column_index) {
-      case 0:
-        return treatment.getId();
-      case 1:
+  public Object getValueAt(int rowIndex, int columnIndex) {
+    Treatment treatment = (Treatment) vData.get(rowIndex);
+    switch (columnIndex) {
+      case 0 -> {
+        return treatment.getName();
+      }
+      case 1 -> {
         return treatment.getInitialDate();
-      case 2:
+      }
+      case 2 -> {
         return treatment.getFinalDate();
-      case 3:
-        Animal animal = AnimalDAO
-          .getInstance()
-          .retrieveByID(treatment.getAnimalId());
-        return animal.getName();
-      default:
-        throw new IndexOutOfBoundsException("column_index out of bounds");
+      }
+      case 3 -> {
+        return treatment.getHistory();
+      }
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
     }
   }
-
+  
   @Override
-  public boolean isCellEditable(int row_index, int column_index) {
-    return false;
+  public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    Treatment treatment = (Treatment) vData.get(rowIndex);
+
+    switch (columnIndex) {
+      case 0 -> treatment.setName((String) aValue);
+      case 1 -> treatment.setInitialDate((String) aValue);
+      case 2 -> treatment.setFinalDate((String) aValue);
+      case 3 ->treatment.setHistory((String) aValue);
+      default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
+    }
   }
+  
+  @Override
+  public boolean isCellEditable(int rowIndex, int columnIndex) {
+    return true;
+  } 
 }
