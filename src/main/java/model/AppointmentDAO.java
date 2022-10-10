@@ -150,8 +150,8 @@ public class AppointmentDAO extends DAO {
       statement.setInt(6, appointment.getAnimalId());
       statement.setInt(7, appointment.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

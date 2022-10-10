@@ -4,7 +4,7 @@ import model.*;
 public class TT01Veterinaria {
 
   public static void main(String args[]) {
-    System.out.println("Register new customer:");
+    System.out.println("Registering new customer...");
     CustomerDAO
       .getInstance()
       .create(
@@ -18,6 +18,8 @@ public class TT01Veterinaria {
         "17983738293"
       );
 
+    System.out.println("\n");
+
     System.out.println("Listing new customer");
     List<Customer> customers = CustomerDAO.getInstance().retrieveAllCustomers();
 
@@ -25,8 +27,12 @@ public class TT01Veterinaria {
       System.out.println("Customer ID is: " + customer.getId() + " and his name: " + customer.getName());
     });
 
-    System.out.println("Register new animal");
+    System.out.println("\n");
+
+    System.out.println("Registering new animal...");
     AnimalDAO.getInstance().create("Gragas", "22/04/2020", 1, 2, 1);
+
+    System.out.println("\n");
 
     System.out.println("Listing animals from customers");
     List<Animal> animals = AnimalDAO.getInstance().retrieveAnimalsByID(1);
@@ -35,8 +41,12 @@ public class TT01Veterinaria {
       System.out.println("Animal ID is: " + animal.getId() + ", name is: " + animal.getName() + " and ID of his customer is: " + animal.getCustomerId());
     });
 
-    System.out.println("Register new specie");
+    System.out.println("\n");
+
+    System.out.println("Registering new specie...");
     SpecieDAO.getInstance().create("Calopsita");
+
+    System.out.println("\n");
 
     System.out.println("Listing animal especies");
     List<Specie> species = SpecieDAO.getInstance().retrieveAll();
@@ -45,7 +55,9 @@ public class TT01Veterinaria {
       System.out.println("Specie ID is: " + specie.getId() + " and his name is: " + specie.getName());
     });
 
-    System.out.println("Register new veterinary");
+    System.out.println("\n");
+
+    System.out.println("Register new veterinarian...");
     VeterinaryDAO.getInstance().create(
       "Gabrielle Dourado", 
       "012987563", 
@@ -57,12 +69,16 @@ public class TT01Veterinaria {
       "19984738238"
     );
 
-    System.out.println("Listing veterinarys");
+    System.out.println("\n");
+
+    System.out.println("Listing veterinarians:");
     List<Veterinary> veterinarians = VeterinaryDAO.getInstance().retrieveAll();
 
-    veterinarians.forEach(veterinary -> {
-      System.out.println("Veterinary document number is: " + veterinary.getDocumentNumber() + " and his name is: " + veterinary.getName());
+    veterinarians.forEach(veterinarian -> {
+      System.out.println("Veterinarian document number is: " + veterinarian.getDocumentNumber() + " and his name is: " + veterinarian.getName());
     });
+
+    System.out.println("\n");
 
     System.out.println("Register new treatment");
     TreatmentDAO.getInstance().create(
@@ -73,12 +89,16 @@ public class TT01Veterinaria {
       1
     );
 
+    System.out.println("\n");
+
     System.out.println("Listing treatments from animal 1");
     List<Treatment> treatments = TreatmentDAO.getInstance().retrieveByAnimalId(1);
 
     treatments.forEach(treatment -> {
       System.out.println("Treatment's animal ID is: " + treatment.getAnimalId() + " and his initial date is: " + treatment.getInitialDate());
     });
+
+    System.out.println("\n");
 
     System.out.println("Register new appointment");
     AppointmentDAO.getInstance().create(
@@ -90,12 +110,16 @@ public class TT01Veterinaria {
       1
     );
 
+    System.out.println("\n");
+
     System.out.println("Listing appointments");
     List<Appointment> appointments = AppointmentDAO.getInstance().retrieveAll();
 
     appointments.forEach(appointment -> {
       System.out.println("Appointment ID is: " + appointment.getId() + ", his date is: " + appointment.getDate() + " and diagnosis is: " + appointment.getDiagnosis());
     });
+
+    System.out.println("\n");
 
     System.out.println("Register new exam");
     ExamDAO.getInstance().create(
@@ -104,6 +128,8 @@ public class TT01Veterinaria {
       "Baixa taxa de cálcio no sangue", 
       1
     );
+
+    System.out.println("\n");
 
     System.out.println("List exams");
     List<Exam> exams = ExamDAO.getInstance().retrieveAll();

@@ -108,8 +108,8 @@ public class SpecieDAO extends DAO {
       statement.setString(1, specie.getName());
       statement.setInt(2, specie.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

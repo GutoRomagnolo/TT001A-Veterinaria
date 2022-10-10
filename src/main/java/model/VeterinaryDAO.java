@@ -145,8 +145,8 @@ public class VeterinaryDAO extends DAO {
       statement.setString(8, veterinary.getPhone());
       statement.setInt(9, veterinary.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

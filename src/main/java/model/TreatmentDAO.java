@@ -141,8 +141,8 @@ public class TreatmentDAO extends DAO {
       statement.setInt(5, treatment.getAnimalId());
       statement.setInt(6, treatment.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception codetion: " + exception.getMessage());
     }
   }
 

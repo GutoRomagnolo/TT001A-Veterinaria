@@ -130,8 +130,8 @@ public class ExamDAO extends DAO {
       statement.setInt(4, exam.getAppointmentId());
       statement.setInt(5, exam.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

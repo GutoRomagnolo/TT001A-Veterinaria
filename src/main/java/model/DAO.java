@@ -7,33 +7,33 @@ import java.util.logging.Logger;
 
 public abstract class DAO {
   public static final String DBURL = "jdbc:sqlite:basdasdsa.db";
-  private static Connection con;
+  private static Connection connection;
   protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
     "dd/MM/yyyy"
   );
 
   public static Connection getConnection() {
-    if (con == null) {
+    if (connection == null) {
       try {
-        con = DriverManager.getConnection(DBURL);
-        if (con != null) {
-          DatabaseMetaData meta = con.getMetaData();
+        connection = DriverManager.getConnection(DBURL);
+        if (connection != null) {
+          DatabaseMetaData meta = connection.getMetaData();
         }
-      } catch (SQLException e) {
-        System.err.println("Exception: " + e.getMessage());
+      } catch (SQLException exception) {
+        System.err.println("Exception: " + exception.getMessage());
       }
     }
-    return con;
+    return connection;
   }
 
   protected ResultSet getResultSet(String query) {
     Statement s;
     ResultSet rs = null;
     try {
-      s = (Statement) con.createStatement();
+      s = (Statement) connection.createStatement();
       rs = s.executeQuery(query);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
     return rs;
   }
@@ -49,15 +49,15 @@ public abstract class DAO {
     Statement s;
     int lastId = -1;
     try {
-      s = (Statement) con.createStatement();
+      s = (Statement) connection.createStatement();
       ResultSet rs = s.executeQuery(
         "SELECT MAX(" + primaryKey + ") AS id FROM " + tableName
       );
       if (rs.next()) {
         lastId = rs.getInt("id");
       }
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
     return lastId;
   }
@@ -65,8 +65,8 @@ public abstract class DAO {
   public static void terminar() {
     try {
       (DAO.getConnection()).close();
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

@@ -137,8 +137,8 @@ public class AnimalDAO extends DAO {
       statement.setInt(5, animal.getCustomerId());
       statement.setInt(6, animal.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 

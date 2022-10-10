@@ -145,8 +145,8 @@ public class CustomerDAO extends DAO {
       statement.setString(3, customer.getPhone());
       statement.setInt(9, customer.getId());
       executeUpdate(statement);
-    } catch (SQLException e) {
-      System.err.println("Exception: " + e.getMessage());
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 
