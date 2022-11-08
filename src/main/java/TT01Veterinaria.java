@@ -107,7 +107,8 @@ public class TT01Veterinaria {
       "Problema de cálcio", 
       1, 
       1,
-      1
+      1,
+      false
     );
 
     System.out.println("\n");

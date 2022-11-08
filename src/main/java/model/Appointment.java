@@ -8,6 +8,7 @@ public class Appointment {
   private final int treatment_id;
   private final int veterinary_id;
   private final int animal_id;
+  private boolean has_finished; 
 
   public Appointment(
     int id,
@@ -16,7 +17,8 @@ public class Appointment {
     String diagnosis,
     int treatment_id,
     int veterinary_id,
-    int animal_id
+    int animal_id,
+    boolean has_finished
   ) {
     this.id = id;
     this.date = date;
@@ -25,6 +27,7 @@ public class Appointment {
     this.treatment_id = treatment_id;
     this.veterinary_id = veterinary_id;
     this.animal_id = animal_id;
+    this.has_finished = has_finished;
   }
 
   public int getId() {
@@ -65,5 +68,13 @@ public class Appointment {
 
   public void setDiagnosis(String diagnosis) {
     this.diagnosis = diagnosis;
+  }
+
+  public Boolean getHasFinished() {
+    return has_finished;
+  }
+
+  public void setHasFinished(Boolean has_finished) {
+    this.has_finished = has_finished;
   }
 }

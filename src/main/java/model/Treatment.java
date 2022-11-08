@@ -1,19 +1,22 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Treatment {
   private final int id;
   private String name;
   private String history;
-  private String initial_date;
-  private String final_date;
+  private Calendar initial_date;
+  private Calendar final_date;
   private final int animal_id;
 
   public Treatment(
     int id,
     String name,
     String history,
-    String initial_date,
-    String final_date,
+    Calendar initial_date,
+    Calendar final_date,
     int animal_id
   ) {
     this.id = id;
@@ -49,18 +52,18 @@ public class Treatment {
   }
 
   public String getInitialDate() {
-    return initial_date;
+    return dateFormat.format(initial_date.getTime());
   }
 
-  public void setInitialDate(String initial_date) {
+  public void setInitialDate(Calendar initial_date) {
     this.initial_date = initial_date;
   }
 
   public String getFinalDate() {
-    return final_date;
+    return dateFormat.format(final_date.getTime()
   }
 
-  public void setFinalDate(String final_date) {
+  public void setFinalDate(Calendar final_date) {
     this.final_date = final_date;
   }
 }

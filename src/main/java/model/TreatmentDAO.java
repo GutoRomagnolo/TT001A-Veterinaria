@@ -23,8 +23,8 @@ public class TreatmentDAO extends DAO {
   public Treatment create(
     String name,
     String history,
-    String initial_date,
-    String final_date,
+    Calendar initial_date,
+    Calendar final_date,
     int animal_id
   ) {
     try {
@@ -37,8 +37,8 @@ public class TreatmentDAO extends DAO {
           );
       statement.setString(1, name);
       statement.setString(2, history);
-      statement.setString(3, initial_date);
-      statement.setString(4, final_date);
+      statement.setString(3, dateFormat.format(initial_date.getTime());
+      statement.setString(4, dateFormat.format(final_date.getTime());
       statement.setInt(5, animal_id);
       executeUpdate(statement);
     } catch (SQLException exception) {
@@ -63,13 +63,19 @@ public class TreatmentDAO extends DAO {
     Treatment treatment = null;
 
     try {
+      Calendar initial_date = Calendar.getInstance();
+      Calendar final_date = Calendar.getInstance();
+
+      initial_date.setTime(dateFormat.parse(result_set.getString("initial_date")));
+      final_date.setTime(dateFormat.parse(result_set.getString("final_date")));
+
       treatment =
         new Treatment(
           result_set.getInt("id"),
           result_set.getString("name"),
           result_set.getString("history"),
-          result_set.getString("initial_date"),
-          result_set.getString("final_date"),
+          initial_date,
+          final_date,
           result_set.getInt("animal_id")
         );
     } catch (SQLException exception) {

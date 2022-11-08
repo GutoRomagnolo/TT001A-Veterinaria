@@ -62,7 +62,7 @@ public abstract class DAO {
     return lastId;
   }
 
-  public static void terminar() {
+  public static void terminate() {
     try {
       (DAO.getConnection()).close();
     } catch (SQLException exception) {
