@@ -3,7 +3,9 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +23,7 @@ public class AppointmentDAO extends DAO {
   }
 
   public Appointment create(
-    String date,
+    Calendar date,
     String symptoms,
     String diagnosis,
     int treatment_id,
@@ -45,7 +47,7 @@ public class AppointmentDAO extends DAO {
             + "has_finished"
             + ") VALUES (?, ?, ?, ?, ?, ?, ?)"
           );
-      statement.setString(1, date);
+      statement.setString(1, dateFormat.format(date.getTime()));
       statement.setString(2, symptoms);
       statement.setString(3, diagnosis);
       statement.setInt(4, treatment_id);
@@ -76,10 +78,13 @@ public class AppointmentDAO extends DAO {
     Appointment appointment = null;
 
     try {
+      Calendar date = Calendar.getInstance();
+      date.setTime(dateFormat.parse(result_set.getString("date")));
+        
       appointment =
         new Appointment(
           result_set.getInt("id"),
-          result_set.getString("date"),
+          date,
           result_set.getString("symptoms"),
           result_set.getString("diagnosis"),
           result_set.getInt("treatment_id"),
@@ -87,7 +92,7 @@ public class AppointmentDAO extends DAO {
           result_set.getInt("animal_id"),
           result_set.getBoolean("has_finished")
         );
-    } catch (SQLException exception) {
+    } catch (SQLException | ParseException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
 
@@ -118,7 +123,7 @@ public class AppointmentDAO extends DAO {
       "SELECT * FROM appointment WHERE id = " + lastId("appointment", "id")
     );
   }
-
+  
   public Appointment retrieveByID(int id) {
     List<Appointment> appointments =
       this.retrieve("SELECT * FROM appointment WHERE id = " + id);

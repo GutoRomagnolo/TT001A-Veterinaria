@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Calendar;
 import java.util.List;
 import model.Appointment;
 
@@ -46,7 +47,7 @@ public class AppointmentTableModel extends GenericTableModel {
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     Appointment appointment = (Appointment) vData.get(rowIndex);
     switch (columnIndex) {
-      case 0 -> appointment.setDate(((String) aValue));
+      case 0 -> appointment.setDate(((Calendar) aValue));
       case 1 -> appointment.setSymptoms((String) aValue);
       case 2 -> appointment.setDiagnosis((String) aValue);
       default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");

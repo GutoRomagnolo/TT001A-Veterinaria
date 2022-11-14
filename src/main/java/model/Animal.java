@@ -4,7 +4,7 @@ public class Animal {
   private final int id;
   private String name;
   private String birthday;
-  private int gender;
+  private String gender;
   private int specie_id;
   private int customer_id;
 
@@ -12,7 +12,7 @@ public class Animal {
     int id,
     String name,
     String birthday,
-    int gender,
+    String gender,
     int specie_id,
     int customer_id
   ) {
@@ -28,8 +28,16 @@ public class Animal {
     return specie_id;
   }
 
+  public void setSpecieId(int specieId) {
+    this.specie_id = specieId;
+  }
+
   public int getCustomerId() {
     return customer_id;
+  }
+
+  public void setCustomerId(int customerId) {
+    this.customer_id = customerId;
   }
 
   public int getId() {
@@ -52,11 +60,15 @@ public class Animal {
     this.name = name;
   }
 
-  public int getGender() {
+  public String getGender() {
     return gender;
   }
 
-  public void setGender(int gender) {
-    this.gender = gender;
+  public boolean setGender(String gender) {
+    if(gender.toLowerCase().equals("male") || gender.toLowerCase().equals("female")){
+        this.gender = gender;
+        return true;
+    }
+    return false;
   }
 }

@@ -52,4 +52,8 @@ public class Exam {
   public void setResult(String result) {
     this.result = result;
   }
+
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

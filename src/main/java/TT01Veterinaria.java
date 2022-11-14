@@ -57,62 +57,6 @@ public class TT01Veterinaria {
 
     System.out.println("\n");
 
-    System.out.println("Register new veterinarian...");
-    VeterinaryDAO.getInstance().create(
-      "Gabrielle Dourado", 
-      "012987563", 
-      "gabid@teste.com.br", 
-      "Rua Alessandro Cazelo, Beteloncio",  
-      93, 
-      "1596320", 
-      "Casa 32", 
-      "19984738238"
-    );
-
-    System.out.println("\n");
-
-    System.out.println("Listing veterinarians:");
-    List<Veterinary> veterinarians = VeterinaryDAO.getInstance().retrieveAll();
-
-    veterinarians.forEach(veterinarian -> {
-      System.out.println("Veterinarian document number is: " + veterinarian.getDocumentNumber() + " and his name is: " + veterinarian.getName());
-    });
-
-    System.out.println("\n");
-
-    System.out.println("Register new treatment");
-    TreatmentDAO.getInstance().create(
-      "Tratamento de bico", 
-      "Bico com problemas de cálcio. Receitado medicamentos contendo cálcio.", 
-      "05/10/2022", 
-      "12/11/2022", 
-      1
-    );
-
-    System.out.println("\n");
-
-    System.out.println("Listing treatments from animal 1");
-    List<Treatment> treatments = TreatmentDAO.getInstance().retrieveByAnimalId(1);
-
-    treatments.forEach(treatment -> {
-      System.out.println("Treatment's animal ID is: " + treatment.getAnimalId() + " and his initial date is: " + treatment.getInitialDate());
-    });
-
-    System.out.println("\n");
-
-    System.out.println("Register new appointment");
-    AppointmentDAO.getInstance().create(
-      "05/10/2022", 
-      "Calopsita com dificuldade para comer, ponta do bico translúcida e fraqueza", 
-      "Problema de cálcio", 
-      1, 
-      1,
-      1,
-      false
-    );
-
-    System.out.println("\n");
-
     System.out.println("Listing appointments");
     List<Appointment> appointments = AppointmentDAO.getInstance().retrieveAll();
 

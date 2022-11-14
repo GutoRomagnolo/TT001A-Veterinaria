@@ -3,7 +3,9 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,8 +39,8 @@ public class TreatmentDAO extends DAO {
           );
       statement.setString(1, name);
       statement.setString(2, history);
-      statement.setString(3, dateFormat.format(initial_date.getTime());
-      statement.setString(4, dateFormat.format(final_date.getTime());
+      statement.setString(3, dateFormat.format(initial_date.getTime()));
+      statement.setString(4, dateFormat.format(final_date.getTime()));
       statement.setInt(5, animal_id);
       executeUpdate(statement);
     } catch (SQLException exception) {
@@ -78,7 +80,7 @@ public class TreatmentDAO extends DAO {
           final_date,
           result_set.getInt("animal_id")
         );
-    } catch (SQLException exception) {
+    } catch (SQLException | ParseException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
 

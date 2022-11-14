@@ -27,6 +27,10 @@ public class Treatment {
     this.animal_id = animal_id;
   }
 
+  protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
+    "dd/MM/yyyy"
+  );
+
   public int getId() {
     return id;
   }
@@ -60,7 +64,7 @@ public class Treatment {
   }
 
   public String getFinalDate() {
-    return dateFormat.format(final_date.getTime()
+    return dateFormat.format(final_date.getTime());
   }
 
   public void setFinalDate(Calendar final_date) {

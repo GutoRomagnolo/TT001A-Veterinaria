@@ -30,32 +30,32 @@ public abstract class GenericTableModel extends AbstractTableModel {
   }
 
   @Override
-  public String getColumnName(int column_index) {
-    return columns[column_index];
+  public String getColumnName(int columnIndex) {
+    return columns[columnIndex];
   }
 
   // Metodos auxiliares:
-  public Object getItem(int index_line) {
-    if (index_line < 0) {
+  public Object getItem(int rowIndex) {
+    if (rowIndex < 0) {
       return null;
     }
-    return vData.get(index_line);
+    return vData.get(rowIndex);
   }
 
   public void addItem(Object obj) {
     vData.add(obj);
-    int last_index = getRowCount() - 1;
-    fireTableRowsInserted(last_index, last_index);
+    int lastIndex = getRowCount() - 1;
+    fireTableRowsInserted(lastIndex, lastIndex);
   }
 
-  public void removeItem(int index_line) {
-    vData.remove(index_line);
-    fireTableRowsDeleted(index_line, index_line);
+  public void removeItem(int rowIndex) {
+    vData.remove(rowIndex);
+    fireTableRowsDeleted(rowIndex, rowIndex);
   }
 
-  public void addListOfItems(List<Object> v_itens) {
+  public void addListOfItems(List<Object> vItems) {
     this.clear();
-    for (Object obj : v_itens) {
+    for (Object obj : vItems) {
       this.addItem(obj);
     }
   }
@@ -69,31 +69,30 @@ public abstract class GenericTableModel extends AbstractTableModel {
     return vData.isEmpty();
   }
 
-  public void setColumnWidth(JTable my_table, int[] v_width) {
-    my_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    for (int i = 0; i < v_width.length; i++) {
-      TableColumn col = my_table.getColumnModel().getColumn(i);
-      col.setPreferredWidth(v_width[i]);
+  public void setColumnWidth(JTable myTable, int[] vWidth) {
+    myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    for (int i = 0; i < vWidth.length; i++) {
+      TableColumn col = myTable.getColumnModel().getColumn(i);
+      col.setPreferredWidth(vWidth[i]);
     }
   }
 
-  // Daqui pra baixo metodos adaptados de ViniGodoy - Curitiba - PR
-  public void selectAndScroll(JTable table, int row_index) {
-    table.getSelectionModel().setSelectionInterval(row_index, row_index);
-    scrollToVisible(table, row_index);
+  public void selectAndScroll(JTable table, int rowIndex) {
+    table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
+    scrollToVisible(table, rowIndex);
   }
 
-  public void scrollToVisible(JTable table, int row_index) {
-    scrollToVisible(table, row_index, 0);
+  public void scrollToVisible(JTable table, int rowIndex) {
+    scrollToVisible(table, rowIndex, 0);
   }
 
-  public void scrollToVisible(JTable table, int row_index, int v_col_index) {
+  public void scrollToVisible(JTable table, int rowIndex, int vColIndex) {
     if (!(table.getParent() instanceof JViewport)) {
       return;
     }
     this.setViewPortPosition(
         (JViewport) table.getParent(),
-        table.getCellRect(row_index, v_col_index, true)
+        table.getCellRect(rowIndex, vColIndex, true)
       );
   }
 

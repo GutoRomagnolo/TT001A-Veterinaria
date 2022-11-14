@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Calendar;
 import java.util.List;
 import model.Treatment;
 
@@ -54,8 +55,8 @@ public class TreatmentTableModel extends GenericTableModel {
 
     switch (columnIndex) {
       case 0 -> treatment.setName((String) aValue);
-      case 1 -> treatment.setInitialDate((String) aValue);
-      case 2 -> treatment.setFinalDate((String) aValue);
+      case 1 -> treatment.setInitialDate((Calendar) aValue);
+      case 2 -> treatment.setFinalDate((Calendar) aValue);
       case 3 ->treatment.setHistory((String) aValue);
       default -> throw new IndexOutOfBoundsException("columnIndex out of bounds");
     }

@@ -91,6 +91,11 @@ public class SpecieDAO extends DAO {
 
     return (species.isEmpty() ? null : species.get(0));
   }
+  
+  public Specie retrieveByName(String name){
+    List<Specie> species = this.retrieve("SELECT * FROM specie WHERE name LIKE " + name );
+    return (species.isEmpty() ? null: species.get(0));
+  }
 
   public List retrieveBySimilarName(String name) {
     return this.retrieve(

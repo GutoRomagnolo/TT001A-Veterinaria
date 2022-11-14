@@ -1,8 +1,11 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Appointment {
   private final int id;
-  private String date;
+  private Calendar date;
   private String symptoms;
   private String diagnosis;
   private final int treatment_id;
@@ -12,7 +15,7 @@ public class Appointment {
 
   public Appointment(
     int id,
-    String date,
+    Calendar date,
     String symptoms,
     String diagnosis,
     int treatment_id,
@@ -29,6 +32,11 @@ public class Appointment {
     this.animal_id = animal_id;
     this.has_finished = has_finished;
   }
+  
+  protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
+    "dd/MM/yyyy"
+  );
+
 
   public int getId() {
     return id;
@@ -47,10 +55,10 @@ public class Appointment {
   }
 
   public String getDate() {
-    return date;
+    return dateFormat.format(date.getTime());
   }
 
-  public void setDate(String date) {
+  public void setDate(Calendar date) {
     this.date = date;
   }
 

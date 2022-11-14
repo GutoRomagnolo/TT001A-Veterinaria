@@ -320,7 +320,7 @@ public class Controller {
         Calendar firstCalendar = Calendar.getInstance();
         Treatment treatment = TreatmentDAO
           .getInstance()
-          .create("", "", firstCalendar, firstCalendar, Controller.getSelectedAnimal());
+          .create("", "", firstCalendar, firstCalendar, selectedAnimal.getId());
         ((GenericTableModel) table.getModel()).addItem(treatment);
       } else JOptionPane.showMessageDialog(
         new JFrame(),
@@ -355,13 +355,13 @@ public class Controller {
 
     List<Animal> animals = AnimalDAO
       .getInstance()
-      .retrieveCustomerByID(customer.getId());
+      .retrieveAnimalByCustomerID(customer.getId());
     for (Animal animal : animals) {
       AnimalDAO.getInstance().delete(animal);
       ((GenericTableModel) animalTable.getModel()).removeItem(0);
     }
 
-    CustomerDAO.getInstance().delete(customer);
+    CustomerDAO.getInstance().deleteCustomer(customer);
     ((GenericTableModel) customerTable.getModel()).removeItem(
         customerTable.getSelectedRow()
       );
@@ -386,12 +386,11 @@ public class Controller {
       );
       return;
     }
-    Object obj =
-      ((GenericTableModel) table.getModel()).getItem(table.getSelectedRow());
+    Object rowObject = ((GenericTableModel) table.getModel()).getItem(table.getSelectedRow());
 
     if (table.getModel() instanceof VeterinaryTableModel) {
-      Veterinary veterinary = (Veterinary) veterinaryObject;
-      List<Appointment> appointments = AppointmentDAO
+      Veterinary veterinary = (Veterinary) rowObject;
+      List<Appointment> appointments = (List<Appointment>) AppointmentDAO
         .getInstance()
         .retrieveByID(veterinary.getId());
       if (!appointments.isEmpty()) {
@@ -406,7 +405,7 @@ public class Controller {
       VeterinaryDAO.getInstance().delete(veterinary);
       selectedVeterinary = null;
     } else if (table.getModel() instanceof SpecieTableModel) {
-      Specie specie = (Specie) specieObject;
+      Specie specie = (Specie) rowObject;
       List<Animal> animals = AnimalDAO.getInstance().retrieveAll();
 
       for (Animal animal : animals) {
@@ -422,8 +421,8 @@ public class Controller {
       }
       SpecieDAO.getInstance().delete(specie);
     } else if (table.getModel() instanceof AnimalTableModel) {
-      Animal animal = (Animal) animalObject;
-      List<Treatment> treatments = TreatmentDAO
+      Animal animal = (Animal) rowObject;
+      List<Treatment> treatments = (List<Treatment>) TreatmentDAO
         .getInstance()
         .retrieveByID(animal.getId());
 
@@ -444,9 +443,9 @@ public class Controller {
       selectedAppointment = null;
       selectedTreatment = null;
     } else if (table.getModel() instanceof AppointmentTableModel) {
-      Appointment appointment = (Appointment) appointmentObject;
+      Appointment appointment = (Appointment) rowObject;
 
-      List<Exam> exams = ExamDAO
+      List<Exam> exams = (List<Exam>) ExamDAO
         .getInstance()
         .retrieveByID(appointment.getId());
 
@@ -463,16 +462,13 @@ public class Controller {
     ((GenericTableModel) table.getModel()).removeItem(table.getSelectedRow());
   }
 
-  public static void insertExame(JTable appointmentTable, String exam) {
+  public static void insertExam(JTable appointmentTable, String exam) {
     if (selectedAppointment != null) {
       if (!exam.isBlank()) {
-        if (
-          ExamDAO
-            .getInstance()
-            .retrieveByID(selectedAppointment.getId())
-            .isEmpty()
-        ) examTextArea.setText("");
-        ExamDAO.getInstance().create(exam, selectedAppointment);
+        if (ExamDAO.getInstance().retrieveByID(selectedAppointment.getId()).isEmpty()) {
+          examTextArea.setText("");
+        }
+        ExamDAO.getInstance().create(exam, "", "", selectedAppointment.getId());
         examTextArea.append(exam + "\n");
       } else JOptionPane.showMessageDialog(
         new JFrame(),
@@ -490,7 +486,7 @@ public class Controller {
 
   public static void updateAppointment(JTable appointmentTable, boolean getHasFinished) {
     if (selectedAppointment != null) {
-      selectedAppointment.setFinished(getHasFinished);
+      selectedAppointment.setHasFinished(getHasFinished);
       AppointmentDAO.getInstance().update(selectedAppointment);
       selectedAppointmentTextArea.setText("");
       if (getHasFinished) selectedAppointmentTextArea.setText(
@@ -553,10 +549,11 @@ public class Controller {
         .getInstance()
         .create(
           calendar,
+          symptoms,
           diagnosis,
-          selectedAnimal,
-          selectedVeterinary,
-          selectedTreatment,
+          selectedAnimal.getId(),
+          selectedVeterinary.getId(),
+          selectedTreatment.getId(),
           false
         );
       return true;
@@ -579,15 +576,13 @@ public class Controller {
   }
 
   public static void retrieveAppointments(JTable appointmentTable) {
-    ((GenericTableModel) appointmentTable.getModel()).addListOfItems(
-        AppointmentDAO.getInstance().retrieveByID(selectedAnimal.getId())
-      );
+    ((GenericTableModel) appointmentTable.getModel()).addListOfItems((List<Object>) AppointmentDAO.getInstance().retrieveByID(selectedAnimal.getId()));
     selectedAppointmentTextField.setText("");
     Controller.verifyExistentAppointments();
   }
 
   public static void verifyExistentAppointments() {
-    List<Appointment> appointment = AppointmentDAO
+    List<Appointment> appointment = (List<Appointment>) AppointmentDAO
       .getInstance()
       .retrieveByID(selectedAnimal.getId());
     if (appointment.isEmpty()) {

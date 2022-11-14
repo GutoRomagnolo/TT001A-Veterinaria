@@ -23,7 +23,7 @@ public class AnimalDAO extends DAO {
   public Animal create(
     String name,
     String birthday,
-    int gender,
+    String gender,
     int specie_id,
     int customer_id
   ) {
@@ -37,7 +37,7 @@ public class AnimalDAO extends DAO {
           );
       statement.setString(1, name);
       statement.setString(2, birthday);
-      statement.setInt(3, gender);
+      statement.setString(3, gender);
       statement.setInt(4, specie_id);
       statement.setInt(5, customer_id);
       executeUpdate(statement);
@@ -68,7 +68,7 @@ public class AnimalDAO extends DAO {
           result_set.getInt("id"),
           result_set.getString("name"),
           result_set.getString("birthday"),
-          result_set.getInt("gender"),
+          result_set.getString("gender"),
           result_set.getInt("specie_id"),
           result_set.getInt("customer_id")
         );
@@ -120,6 +120,10 @@ public class AnimalDAO extends DAO {
         "SELECT * FROM animal WHERE name LIKE '" + name + "'%"
       );
   }
+  
+  public List retrieveAnimalByCustomerID (int customerID) {
+    return this.retrieve("SELECT * FROM animal WHERE customer_id = " + customerID);
+  }
 
   public void update(Animal animal) {
     try {
@@ -132,7 +136,7 @@ public class AnimalDAO extends DAO {
           );
       statement.setString(1, animal.getName());
       statement.setString(2, animal.getBirthday());
-      statement.setInt(3, animal.getGender());
+      statement.setString(3, animal.getGender());
       statement.setInt(4, animal.getSpecieId());
       statement.setInt(5, animal.getCustomerId());
       statement.setInt(6, animal.getId());
