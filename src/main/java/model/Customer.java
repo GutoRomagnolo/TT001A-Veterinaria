@@ -3,34 +3,25 @@ package model;
 public class Customer {
   private final int id;
   private String name;
-  private String email;
-  private String document_number;
   private String address;
-  private int number;
-  private String postal_code;
-  private String complement;
   private String phone;
+  private String zipCode;
+  private String email;
 
   public Customer(
     int id,
     String name,
-    String email,
-    String document_number,
     String address,
-    int number,
-    String postal_code,
-    String complement,
+    String zipCode,
+    String email,
     String phone
   ) {
     this.id = id;
     this.name = name;
-    this.email = email;
-    this.document_number = document_number;
     this.address = address;
-    this.number = number;
-    this.postal_code = postal_code;
-    this.complement = complement;
     this.phone = phone;
+    this.zipCode = zipCode;
+    this.email = email;
   }
 
   public int getId() {
@@ -41,8 +32,16 @@ public class Customer {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public String getAddress() {
+    return address;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public String getZipCode() {
+    return zipCode;
   }
 
   public String getEmail() {
@@ -50,54 +49,42 @@ public class Customer {
   }
 
   public void setEmail(String email) {
-    this.email = email;
+    if (!email.equals("")) {
+      this.email = email;
+    }
   }
 
-  public String getDocumentNumber() {
-    return document_number;
-  }
-
-  public void setDocumentNumber(String document_number) {
-    this.document_number = document_number;
-  }
-
-  public String getAddress() {
-    return address;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public void setAddress(String address) {
     this.address = address;
   }
 
-  public int getNumber() {
-    return number;
-  }
-
-  public void setNumber(int number) {
-    this.number = number;
-  }
-
-  public String getPostalCode() {
-    return postal_code;
-  }
-
-  public void setPostalCode(String postal_code) {
-    this.postal_code = postal_code;
-  }
-
-  public String getComplement() {
-    return complement;
-  }
-
-  public void setComplement(String complement) {
-    this.complement = complement;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
-
   public void setPhone(String phone) {
     this.phone = phone;
+  }
+
+  public void setZipCode(String zipCode) {
+    this.zipCode = zipCode;
+  }
+
+  @Override
+  public String toString() {
+    String description =
+      "Customer{" +
+      "name = " +
+      name +
+      ", address = " +
+      address +
+      ", phone = " +
+      phone +
+      ", zipCode = " +
+      zipCode +
+      ", email = " +
+      email +
+      '}';
+    return description + "\n";
   }
 }

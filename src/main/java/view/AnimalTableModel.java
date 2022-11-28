@@ -1,10 +1,8 @@
 package view;
 
-import controller.Controller;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import model.Animal;
+import model.AnimalDAO;
 import model.Specie;
 import model.SpecieDAO;
 
@@ -20,14 +18,13 @@ public class AnimalTableModel extends GenericTableModel {
       case 0:
         return String.class;
       case 1:
-        return Integer.class;
+        return String.class;
       case 2:
         return String.class;
       case 3:
         return String.class;
-      default: throw new IndexOutOfBoundsException(
-        "columnIndex out of bounds"
-      );
+      default:
+        throw new IndexOutOfBoundsException("Column index out of bounds");
     }
   }
 
@@ -42,11 +39,15 @@ public class AnimalTableModel extends GenericTableModel {
       case 2:
         return animal.getGender();
       case 3:
-        Specie specie = SpecieDAO.getInstance().retrieveByID(animal.getSpecieId());
-        return specie != null ? specie.getName() : "";
-      default: throw new IndexOutOfBoundsException(
-        "columnIndex out of bounds"
-      );
+        Specie species = SpecieDAO
+          .getInstance()
+          .retrieveById(animal.getSpecieId());
+        if (species != null) {
+          return species.getName();
+        }
+        return "";
+      default:
+        throw new IndexOutOfBoundsException("Column index out of bounds");
     }
   }
 
@@ -54,36 +55,31 @@ public class AnimalTableModel extends GenericTableModel {
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     Animal animal = (Animal) vData.get(rowIndex);
     switch (columnIndex) {
-      case 0: 
+      case 0:
         animal.setName((String) aValue);
         break;
       case 1:
-        animal.setBirthday((String) aValue);
+        animal.setBirthday(Integer.parseInt((String) aValue));
         break;
       case 2:
-        boolean validateGender = animal.setGender((String) aValue);
-        if (!validateGender) {
-          JOptionPane.showMessageDialog(new JFrame(), "Um cliente deve ser selecionado para fazer o cadastro de um animal", "Dialog",JOptionPane.ERROR_MESSAGE);
-        }
+        animal.setGender((String) aValue);
         break;
       case 3:
-        Specie specie = SpecieDAO.getInstance().retrieveByName((String)aValue);
-        
-        if(specie == null){
-            specie = SpecieDAO.getInstance().create((String)aValue);
-            Controller.updateInstance(specie);
+        Specie species = SpecieDAO
+          .getInstance()
+          .retrieveByName((String) aValue);
+        if (species == null) {
+          species = SpecieDAO.getInstance().create((String) aValue);
         }
-        animal.setSpecieId(specie.getId());
+        animal.setSpecieId(species.getId());
         break;
-      default: throw new IndexOutOfBoundsException(
-        "columnIndex out of bounds"
-      );
+      default:
+        throw new IndexOutOfBoundsException("Column index out of bounds");
     }
 
-    Controller.updateInstance(animal); 
+    AnimalDAO.getInstance().update(animal);
   }
 
-  @Override
   public boolean isCellEditable(int rowIndex, int columnIndex) {
     return true;
   }

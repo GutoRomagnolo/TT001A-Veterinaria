@@ -1,40 +1,30 @@
 package model;
 
-public class Exam {
-  private final int id;
-  private String name;
-  private String description;
-  private String result;
-  private final int appointment_id;
+import java.util.Calendar;
 
-  public Exam(
-    int id,
-    String name,
-    String description,
-    String result,
-    int appointment_id
-  ) {
+public class Exam {
+  private int id;
+  private Calendar date;
+  private String description;
+  private int animalId;
+
+  public Exam(int id, Calendar date, String description, int appointmentId) {
     this.id = id;
-    this.name = name;
+    this.date = date;
     this.description = description;
-    this.result = result;
-    this.appointment_id = appointment_id;
+    this.animalId = appointmentId;
+  }
+
+  public Calendar getDate() {
+    return date;
+  }
+
+  public void setDate(Calendar date) {
+    this.date = date;
   }
 
   public int getId() {
     return id;
-  }
-
-  public int getAppointmentId() {
-    return appointment_id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getDescription() {
@@ -45,15 +35,11 @@ public class Exam {
     this.description = description;
   }
 
-  public String getResult() {
-    return result;
+  public int getAnimalId() {
+    return animalId;
   }
 
-  public void setResult(String result) {
-    this.result = result;
+  public void setAnimalId(int appointmentId) {
+    this.animalId = appointmentId;
   }
-
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

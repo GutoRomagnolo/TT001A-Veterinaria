@@ -6,36 +6,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class DAO {
-  public static final String DBURL = "jdbc:sqlite:basdasdsa.db";
-  private static Connection connection;
-  protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
-    "dd/MM/yyyy"
-  );
+  public static final String DBURL = "jdbc:sqlite:TEST.db";
+  private static Connection db;
+  protected static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
   public static Connection getConnection() {
-    if (connection == null) {
+    if (db == null) {
       try {
-        connection = DriverManager.getConnection(DBURL);
-        if (connection != null) {
-          DatabaseMetaData meta = connection.getMetaData();
+        db = DriverManager.getConnection(DBURL);
+        if (db != null) {
+          DatabaseMetaData meta = db.getMetaData();
         }
       } catch (SQLException exception) {
         System.err.println("Exception: " + exception.getMessage());
       }
     }
-    return connection;
+    return db;
   }
 
   protected ResultSet getResultSet(String query) {
-    Statement s;
-    ResultSet rs = null;
+    Statement statement;
+    ResultSet resultSet = null;
     try {
-      s = (Statement) connection.createStatement();
-      rs = s.executeQuery(query);
+      statement = (Statement) db.createStatement();
+      resultSet = statement.executeQuery(query);
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
-    return rs;
+    return resultSet;
   }
 
   protected int executeUpdate(PreparedStatement queryStatement)
@@ -46,15 +44,15 @@ public abstract class DAO {
   }
 
   protected int lastId(String tableName, String primaryKey) {
-    Statement s;
+    Statement statement;
     int lastId = -1;
     try {
-      s = (Statement) connection.createStatement();
-      ResultSet rs = s.executeQuery(
+      statement = (Statement) db.createStatement();
+      ResultSet resultSet = statement.executeQuery(
         "SELECT MAX(" + primaryKey + ") AS id FROM " + tableName
       );
-      if (rs.next()) {
-        lastId = rs.getInt("id");
+      if (resultSet.next()) {
+        lastId = resultSet.getInt("id");
       }
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
@@ -62,7 +60,7 @@ public abstract class DAO {
     return lastId;
   }
 
-  public static void terminate() {
+  public static void endConnection() {
     try {
       (DAO.getConnection()).close();
     } catch (SQLException exception) {
@@ -70,44 +68,36 @@ public abstract class DAO {
     }
   }
 
-  // Create table SQLite
   protected final boolean createTable() {
     try {
-      PreparedStatement stmt;
-      stmt =
+      PreparedStatement statement;
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
             "CREATE TABLE IF NOT EXISTS customer( \n" +
             "id INTEGER PRIMARY KEY, \n" +
-            "number INTEGER, \n" +
             "name VARCHAR, \n" +
-            "email VARCHAR, \n" +
-            "document_number VARCHAR, \n" +
             "address VARCHAR, \n" +
-            "postal_code VARCHAR, \n" +
-            "complement VARCHAR, \n" +
+            "zip_code VARCHAR, \n" +
+            "email VARCHAR, \n" +
             "phone VARCHAR); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
             "CREATE TABLE IF NOT EXISTS animal( \n" +
             "id INTEGER PRIMARY KEY, \n" +
-            "birthday VARCHAR, \n" +
             "name VARCHAR, \n" +
-            "gender INTEGER, \n" +
+            "birthday INTEGER, \n" +
+            "gender VARCHAR, \n" +
             "specie_id INTEGER, \n" +
-            "customer_id INTEGER, \n" +
-            "FOREIGN KEY (specie_id) REFERENCES specie(id), \n" +
-            "FOREIGN KEY (customer_id) REFERENCES customer(id)); \n"
+            "customer_id INTEGER); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
@@ -115,70 +105,67 @@ public abstract class DAO {
             "id INTEGER PRIMARY KEY, \n" +
             "name VARCHAR); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
-            "CREATE TABLE IF NOT EXISTS veterinary( \n" +
+            "CREATE TABLE IF NOT EXISTS veterinarian( \n" +
             "id INTEGER PRIMARY KEY, \n" +
             "name VARCHAR, \n" +
-            "document_number VARCHAR, \n" +
-            "email VARCHAR, \n" +   
-            "address VARCHAR, \n" +
-            "number INTEGER, \n" +
-            "postal_code VARCHAR, \n" +
-            "complement VARCHAR, \n" +
+            "email VARCHAR, \n" +
             "phone VARCHAR); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
             "CREATE TABLE IF NOT EXISTS treatment( \n" +
             "id INTEGER PRIMARY KEY, \n" +
+            "animal_id INTEGER, \n" +
             "name VARCHAR, \n" +
-            "history TEXT, \n" +
-            "initial_date DATE, \n" +
-            "final_date DATE, \n" +
-            "animal_id INTEGER); \n"
+            "initial_date TEXT, \n" +
+            "final_date TEXT, \n" +
+            "has_finished INTEGER); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
             "CREATE TABLE IF NOT EXISTS appointment( \n" +
             "id INTEGER PRIMARY KEY, \n" +
             "date DATE, \n" +
-            "symptoms VARCHAR, \n" +
-            "diagnosis VARCHAR, \n" +
-            "veterinary_id INTEGER, \n" +
+            "hour VARCHAR, \n" +
+            "comments VARCHAR, \n" +
+            "animal_id INTEGER, \n" +
+            "veterinarian_id INTEGER, \n" +
             "treatment_id INTEGER, \n" +
-            "animal_id INTEGER); \n"
+            "has_finished INTEGER); \n"
           );
-
-      executeUpdate(stmt);
-      stmt =
+      executeUpdate(statement);
+      statement =
         DAO
           .getConnection()
           .prepareStatement(
             "CREATE TABLE IF NOT EXISTS exam( \n" +
             "id INTEGER PRIMARY KEY, \n" +
-            "name VARCHAR, \n" +
+            "date DATE, \n" +
             "description VARCHAR, \n" +
-            "result VARCHAR, \n" +
-            "appointment_id INTEGER); \n"
+            "animal_id INTEGER); \n"
           );
-
-      executeUpdate(stmt);
+      executeUpdate(statement);
+      statement =
+        DAO
+          .getConnection()
+          .prepareStatement(
+            "INSERT OR IGNORE INTO specie (id, name) VALUES (1, 'Dog')"
+          );
+      executeUpdate(statement);
       return true;
-    } catch (SQLException exception) {
-      Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, exception);
+    } catch (SQLException ex) {
+      Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
     }
     return false;
   }

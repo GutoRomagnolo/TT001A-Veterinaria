@@ -1,55 +1,32 @@
 package model;
 
 public class Animal {
-  private final int id;
+
+  private int id;
   private String name;
-  private String birthday;
-  private String gender;
-  private int specie_id;
-  private int customer_id;
+  private int birthday;
+  private String gender; // Macho, Femea
+  private int specieId;
+  private int customerId;
 
   public Animal(
     int id,
     String name,
-    String birthday,
+    int birthday,
     String gender,
-    int specie_id,
-    int customer_id
+    int specieId,
+    int customerId
   ) {
     this.id = id;
     this.name = name;
     this.birthday = birthday;
     this.gender = gender;
-    this.specie_id = specie_id;
-    this.customer_id = customer_id;
-  }
-
-  public int getSpecieId() {
-    return specie_id;
-  }
-
-  public void setSpecieId(int specieId) {
-    this.specie_id = specieId;
-  }
-
-  public int getCustomerId() {
-    return customer_id;
-  }
-
-  public void setCustomerId(int customerId) {
-    this.customer_id = customerId;
+    this.specieId = specieId;
+    this.customerId = customerId;
   }
 
   public int getId() {
     return id;
-  }
-
-  public String getBirthday() {
-    return birthday;
-  }
-
-  public void setBirthday(String birthday) {
-    this.birthday = birthday;
   }
 
   public String getName() {
@@ -60,15 +37,40 @@ public class Animal {
     this.name = name;
   }
 
+  public int getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(int birthday) {
+    this.birthday = birthday;
+  }
+
   public String getGender() {
     return gender;
   }
 
-  public boolean setGender(String gender) {
-    if(gender.toLowerCase().equals("male") || gender.toLowerCase().equals("female")){
-        this.gender = gender;
-        return true;
-    }
-    return false;
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  public int getSpecieId() {
+    return specieId;
+  }
+
+  public void setSpecieId(int specieId) {
+    this.specieId = specieId;
+  }
+
+  public int getCustomerId() {
+    return customerId;
+  }
+
+  public void setCustomerId(int customerId) {
+    this.customerId = customerId;
+  }
+
+  @Override
+  public String toString() {
+    return "Animal{" + "name=" + name + '}';
   }
 }

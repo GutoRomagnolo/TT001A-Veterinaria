@@ -1,5 +1,8 @@
 package model;
 
+import static model.DAO.dateFormat;
+import static model.DAO.getConnection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,86 +22,66 @@ public class TreatmentDAO extends DAO {
   }
 
   public static TreatmentDAO getInstance() {
-    return ((instance == null) ? (instance = new TreatmentDAO()) : instance);
+    return (instance == null ? (instance = new TreatmentDAO()) : instance);
   }
 
   public Treatment create(
     String name,
-    String history,
     Calendar initial_date,
     Calendar final_date,
-    int animal_id
+    int animal_id,
+    int has_finished
   ) {
     try {
       PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement(
-            "INSERT INTO treatment (name, history, initial_date, final_date, animal_id) VALUES (?, ?, ?, ?, ?)"
-          );
-      statement.setString(1, name);
-      statement.setString(2, history);
+      statement = DAO.getConnection().prepareStatement(
+        "INSERT INTO treatment (animal_id, name, initial_date, final_date, has_finished) VALUES (?, ?, ?, ?, ?)"
+      );
+      statement.setInt(1, animal_id);
+      statement.setString(2, name);
       statement.setString(3, dateFormat.format(initial_date.getTime()));
       statement.setString(4, dateFormat.format(final_date.getTime()));
-      statement.setInt(5, animal_id);
+      statement.setInt(5, has_finished);
       executeUpdate(statement);
     } catch (SQLException exception) {
-      Logger
-        .getLogger(TreatmentDAO.class.getName())
-        .log(Level.SEVERE, null, exception);
+      Logger.getLogger(TreatmentDAO.class.getName()).log(Level.SEVERE, null, exception);
     }
-
-    return this.retrieveByID(lastId("treatment", "id"));
+    return this.retrieveById(lastId("treatment", "id"));
   }
 
-  public boolean isLastEmpty() {
-    Treatment lastTreatment = this.retrieveByID(lastId("treatment", "id"));
-    if (lastTreatment != null) {
-      return lastTreatment.getInitialDate().trim().isEmpty();
-    }
-
-    return false;
-  }
-
-  private Treatment buildObject(ResultSet result_set) {
+  private Treatment buildObject(ResultSet resultSet) {
     Treatment treatment = null;
-
     try {
-      Calendar initial_date = Calendar.getInstance();
-      Calendar final_date = Calendar.getInstance();
-
-      initial_date.setTime(dateFormat.parse(result_set.getString("initial_date")));
-      final_date.setTime(dateFormat.parse(result_set.getString("final_date")));
-
-      treatment =
-        new Treatment(
-          result_set.getInt("id"),
-          result_set.getString("name"),
-          result_set.getString("history"),
-          initial_date,
-          final_date,
-          result_set.getInt("animal_id")
-        );
-    } catch (SQLException | ParseException exception) {
+      Calendar calendarDateOne = Calendar.getInstance();
+      calendarDateOne.setTime(dateFormat.parse(resultSet.getString("initial_date")));
+      Calendar calendarDateTwo = Calendar.getInstance();
+      calendarDateTwo.setTime(dateFormat.parse(resultSet.getString("final_date")));
+      treatment = new Treatment(
+        resultSet.getInt("id"),
+        resultSet.getString("name"),
+        calendarDateOne,
+        calendarDateTwo,
+        resultSet.getInt("animal_id"),
+        resultSet.getInt("has_finished")
+      );
+    } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
+    } catch (ParseException exception) {
+      Logger.getLogger(TreatmentDAO.class.getName()).log(Level.SEVERE, null, exception);
     }
-
     return treatment;
   }
 
   public List retrieve(String query) {
     List<Treatment> treatments = new ArrayList();
-    ResultSet result_set = getResultSet(query);
-
+    ResultSet resultSet = getResultSet(query);
     try {
-      while (result_set.next()) {
-        treatments.add(buildObject(result_set));
+      while (resultSet.next()) {
+        treatments.add(buildObject(resultSet));
       }
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
-
     return treatments;
   }
 
@@ -108,60 +91,54 @@ public class TreatmentDAO extends DAO {
 
   public List retrieveLast() {
     return this.retrieve(
-        "SELECT * FROM treatment WHERE id = " + lastId("treatment", "id")
-      );
+      "SELECT * FROM treatment WHERE id = " + lastId("treatment", "id")
+    );
   }
 
-  public Treatment retrieveByID(int id) {
-    List<Treatment> treatments =
-      this.retrieve("SELECT * FROM treatment WHERE id = " + id);
-
+  public Treatment retrieveById(int id) {
+    List<Treatment> treatments = this.retrieve("SELECT * FROM treatment WHERE id = " + id);
     return (treatments.isEmpty() ? null : treatments.get(0));
   }
 
-  public List retrieveByAnimalId(int id) {
-    return this.retrieve("SELECT * FROM treatment WHERE animal_id = " + id);
-  }
-
-  public List retrieveByDate(String initial_date, String final_date) {
+  public List retrieveBySimilarName(String name) {
     return this.retrieve(
-        "SELECT * FROM treatment WHERE initial_date >= '" +
-        initial_date +
-        "' AND final_date <= '" +
-        final_date +
-        "'"
-      );
+      "SELECT * FROM treatment WHERE name LIKE '%" + name + "%'"
+    );
   }
 
   public void update(Treatment treatment) {
     try {
       PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement(
-            "UPDATE treatment SET name = ?, history = ?, initial_date = ?, final_date = ?, animal_id = ? WHERE id = ?"
-          );
-      statement.setString(1, treatment.getName());    
-      statement.setString(2, treatment.getHistory());    
-      statement.setString(3, treatment.getInitialDate());
-      statement.setString(4, treatment.getFinalDate());
-      statement.setInt(5, treatment.getAnimalId());
+      statement = DAO.getConnection().prepareStatement(
+        "UPDATE treatment SET name = ?, initial_date = ?, final_date = ?, animal_id = ?, has_finished = ? WHERE id = ?"
+      );
+      statement.setString(1, treatment.getName());
+      statement.setString(2, dateFormat.format(treatment.getInitialDate().getTime()));
+      statement.setString(3, dateFormat.format(treatment.getFinalDate().getTime()));
+      statement.setInt(4, treatment.getAnimalId());
+      statement.setInt(5, treatment.getHasFinished());
       statement.setInt(6, treatment.getId());
       executeUpdate(statement);
     } catch (SQLException exception) {
-      System.err.println("Exception codetion: " + exception.getMessage());
+      System.err.println("Exception: " + exception.getMessage());
     }
   }
 
   public void delete(Treatment treatment) {
+    PreparedStatement statement;
     try {
-      PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement("DELETE FROM treatment WHERE id = ?");
+      statement = DAO.getConnection().prepareStatement("DELETE FROM treatment WHERE id = ?");
       statement.setInt(1, treatment.getId());
+      executeUpdate(statement);
+    } catch (SQLException exception) {
+      System.err.println("Exception: " + exception.getMessage());
+    }
+  }
+
+  public void deleteById(int id) {
+    PreparedStatement statement;
+    try {
+      statement = DAO.getConnection().prepareStatement("DELETE FROM treatment WHERE id =" + id);
       executeUpdate(statement);
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());

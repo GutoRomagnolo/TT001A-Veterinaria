@@ -1,42 +1,29 @@
 package model;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Treatment {
   private final int id;
   private String name;
-  private String history;
-  private Calendar initial_date;
-  private Calendar final_date;
-  private final int animal_id;
+  private Calendar initialDate;
+  private Calendar finalDate;
+  private final int animalId;
+  private int hasFinished;
 
   public Treatment(
     int id,
     String name,
-    String history,
-    Calendar initial_date,
-    Calendar final_date,
-    int animal_id
+    Calendar initialDate,
+    Calendar finalDate,
+    int animalId,
+    int hasFinished
   ) {
     this.id = id;
     this.name = name;
-    this.history = history;
-    this.initial_date = initial_date;
-    this.final_date = final_date;
-    this.animal_id = animal_id;
-  }
-
-  protected static SimpleDateFormat dateFormat = new SimpleDateFormat(
-    "dd/MM/yyyy"
-  );
-
-  public int getId() {
-    return id;
-  }
-
-  public int getAnimalId() {
-    return animal_id;
+    this.initialDate = initialDate;
+    this.finalDate = finalDate;
+    this.animalId = animalId;
+    this.hasFinished = hasFinished;
   }
 
   public String getName() {
@@ -47,27 +34,56 @@ public class Treatment {
     this.name = name;
   }
 
-  public String getHistory() {
-    return history;
+  public Calendar getInitialDate() {
+    return initialDate;
   }
 
-  public void setHistory(String history) {
-    this.history = history;
+  public void setInitialDate(Calendar initialDate) {
+    this.initialDate = initialDate;
   }
 
-  public String getInitialDate() {
-    return dateFormat.format(initial_date.getTime());
+  public Calendar getFinalDate() {
+    return finalDate;
   }
 
-  public void setInitialDate(Calendar initial_date) {
-    this.initial_date = initial_date;
+  public void setFinalDate(Calendar finalDate) {
+    this.finalDate = finalDate;
   }
 
-  public String getFinalDate() {
-    return dateFormat.format(final_date.getTime());
+  public int getAnimalId() {
+    return animalId;
   }
 
-  public void setFinalDate(Calendar final_date) {
-    this.final_date = final_date;
+  public int getHasFinished() {
+    return hasFinished;
+  }
+
+  public void setHasFinished(int hasFinished) {
+    this.hasFinished = hasFinished;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  @Override
+  public String toString() {
+    return (
+      "Treatment{" +
+      "id = " +
+      id +
+      ", name = " +
+      name +
+      '\'' +
+      ", initialDate = " +
+      initialDate +
+      ", finalDate = " +
+      finalDate +
+      ", animalId = " +
+      animalId +
+      ", hasFinished = " +
+      hasFinished +
+      '}'
+    );
   }
 }

@@ -34,7 +34,6 @@ public abstract class GenericTableModel extends AbstractTableModel {
     return columns[columnIndex];
   }
 
-  // Metodos auxiliares:
   public Object getItem(int rowIndex) {
     if (rowIndex < 0) {
       return null;
@@ -42,8 +41,8 @@ public abstract class GenericTableModel extends AbstractTableModel {
     return vData.get(rowIndex);
   }
 
-  public void addItem(Object obj) {
-    vData.add(obj);
+  public void addItem(Object object) {
+    vData.add(object);
     int lastIndex = getRowCount() - 1;
     fireTableRowsInserted(lastIndex, lastIndex);
   }
@@ -55,8 +54,8 @@ public abstract class GenericTableModel extends AbstractTableModel {
 
   public void addListOfItems(List<Object> vItems) {
     this.clear();
-    for (Object obj : vItems) {
-      this.addItem(obj);
+    for (Object object : vItems) {
+      this.addItem(object);
     }
   }
 
@@ -71,9 +70,9 @@ public abstract class GenericTableModel extends AbstractTableModel {
 
   public void setColumnWidth(JTable myTable, int[] vWidth) {
     myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    for (int i = 0; i < vWidth.length; i++) {
-      TableColumn col = myTable.getColumnModel().getColumn(i);
-      col.setPreferredWidth(vWidth[i]);
+    for (int index = 0; index < vWidth.length; index++) {
+      TableColumn tableColumn = myTable.getColumnModel().getColumn(index);
+      tableColumn.setPreferredWidth(vWidth[index]);
     }
   }
 
@@ -86,14 +85,14 @@ public abstract class GenericTableModel extends AbstractTableModel {
     scrollToVisible(table, rowIndex, 0);
   }
 
-  public void scrollToVisible(JTable table, int rowIndex, int vColIndex) {
+  public void scrollToVisible(JTable table, int rowIndex, int valueIndexColumn) {
     if (!(table.getParent() instanceof JViewport)) {
       return;
     }
     this.setViewPortPosition(
-        (JViewport) table.getParent(),
-        table.getCellRect(rowIndex, vColIndex, true)
-      );
+      (JViewport) table.getParent(),
+      table.getCellRect(rowIndex, valueIndexColumn, true)
+    );
   }
 
   private void setViewPortPosition(JViewport viewport, Rectangle position) {

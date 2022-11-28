@@ -1,7 +1,6 @@
 package model;
 
 public class Specie {
-
   private final int id;
   private String name;
 

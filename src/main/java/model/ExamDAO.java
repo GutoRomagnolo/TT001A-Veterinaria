@@ -1,9 +1,11 @@
 package model;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,78 +19,52 @@ public class ExamDAO extends DAO {
   }
 
   public static ExamDAO getInstance() {
-    return ((instance == null) ? (instance = new ExamDAO()) : instance);
+    return (instance == null ? (instance = new ExamDAO()) : instance);
   }
 
-  public Exam create(
-    String name,
-    String result,
-    String description,
-    int appointment_id
-  ) {
+  public Exam create(Calendar date, String name, int animalId) {
     try {
       PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement(
-            "INSERT INTO exam (name, result, description, appointment_id) VALUES (?, ?, ?, ?)"
-          );
-      statement.setString(1, name);
-      statement.setString(2, result);
-      statement.setString(3, description);
-      statement.setInt(4, appointment_id);
+      statement = DAO.getConnection().prepareStatement(
+        "INSERT INTO exam (date, description, animal_id) VALUES (?, ?, ?)"
+      );
+      statement.setDate(1, new Date(date.getTimeInMillis()));
+      statement.setString(2, name);
+      statement.setInt(3, animalId);
       executeUpdate(statement);
     } catch (SQLException exception) {
-      Logger
-        .getLogger(ExamDAO.class.getName())
-        .log(Level.SEVERE, null, exception);
+      Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, exception);
     }
-
-    return this.retrieveByID(lastId("exam", "id"));
+    return this.retrieveById(lastId("exam", "id"));
   }
 
-  public boolean isLastEmpty() {
-    Exam lastExam =
-      this.retrieveByID(lastId("exam", "id"));
-    if (lastExam != null) {
-      return lastExam.getDescription().trim().isEmpty();
-    }
-
-    return false;
-  }
-
-  private Exam buildObject(ResultSet result_set) {
+  private Exam buildObject(ResultSet resultSet) {
     Exam exam = null;
-
     try {
-      exam =
-        new Exam(
-          result_set.getInt("id"),
-          result_set.getString("name"),
-          result_set.getString("result"),
-          result_set.getString("description"),
-          result_set.getInt("appointment_id")
-        );
+      Calendar dt = Calendar.getInstance();
+      dt.setTime(resultSet.getDate("date"));
+      exam = new Exam(
+        resultSet.getInt("id"),
+        dt,
+        resultSet.getString("description"),
+        resultSet.getInt("animal_id")
+      );
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
-
     return exam;
   }
 
   public List retrieve(String query) {
     List<Exam> exams = new ArrayList();
-    ResultSet result_set = getResultSet(query);
-
+    ResultSet resultSet = getResultSet(query);
     try {
-      while (result_set.next()) {
-        exams.add(buildObject(result_set));
+      while (resultSet.next()) {
+        exams.add(buildObject(resultSet));
       }
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
     }
-
     return exams;
   }
 
@@ -98,37 +74,35 @@ public class ExamDAO extends DAO {
 
   public List retrieveLast() {
     return this.retrieve(
-        "SELECT * FROM exam WHERE id = " + lastId("exam", "id")
-      );
+      "SELECT * FROM exam WHERE id = " + lastId("exam", "id")
+    );
   }
 
-  public Exam retrieveByID(int id) {
-    List<Exam> exams =
-      this.retrieve("SELECT * FROM exam WHERE id = " + id);
-
+  public Exam retrieveById(int id) {
+    List<Exam> exams = this.retrieve("SELECT * FROM exam WHERE id = " + id);
     return (exams.isEmpty() ? null : exams.get(0));
   }
 
-  public List retrieveByAppointmentId(String id) {
+  public List retrieveByAnimalId(int animal_id) {
+    return this.retrieve("SELECT * FROM exam WHERE animal_id = " + animal_id);
+  }
+
+  public List retrieveBySimilarName(String name) {
     return this.retrieve(
-        "SELECT * FROM exam WHERE appointment_id = " + id
-      );
+      "SELECT * FROM exam WHERE description LIKE '%" + name + "%'"
+    );
   }
 
   public void update(Exam exam) {
     try {
       PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement(
-            "UPDATE exam SET name = ?, result = ?, description = ?, appointment_id = ? WHERE id = ?"
-          );
-      statement.setString(1, exam.getName());
-      statement.setString(2, exam.getResult());
-      statement.setString(3, exam.getDescription());
-      statement.setInt(4, exam.getAppointmentId());
-      statement.setInt(5, exam.getId());
+      statement = DAO.getConnection().prepareStatement(
+        "UPDATE exam SET date = ?,description = ?, animal_id = ? WHERE id = ?"
+      );
+      statement.setDate(1, new Date(exam.getDate().getTimeInMillis()));
+      statement.setString(2, exam.getDescription());
+      statement.setInt(3, exam.getAnimalId());
+      statement.setInt(4, exam.getId());
       executeUpdate(statement);
     } catch (SQLException exception) {
       System.err.println("Exception: " + exception.getMessage());
@@ -136,12 +110,9 @@ public class ExamDAO extends DAO {
   }
 
   public void delete(Exam exam) {
+    PreparedStatement statement;
     try {
-      PreparedStatement statement;
-      statement =
-        DAO
-          .getConnection()
-          .prepareStatement("DELETE FROM exam WHERE id = ?");
+      statement = DAO.getConnection().prepareStatement("DELETE FROM exam WHERE id = ?");
       statement.setInt(1, exam.getId());
       executeUpdate(statement);
     } catch (SQLException exception) {
