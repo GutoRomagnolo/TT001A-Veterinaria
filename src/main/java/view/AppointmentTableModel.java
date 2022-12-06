@@ -25,7 +25,7 @@ public class AppointmentTableModel extends GenericTableModel {
         "Animal",
         "Veterinarian",
         "Notes",
-        "Final date",
+        "Finished"
       }
     );
   }

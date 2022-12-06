@@ -9,7 +9,7 @@ import model.SpecieDAO;
 public class AnimalTableModel extends GenericTableModel {
 
   public AnimalTableModel(List vData) {
-    super(vData, new String[] { "Name", "Birthday", "Gender", "Specie" });
+    super(vData, new String[] { "Name", "Age", "Gender", "Specie" });
   }
 
   @Override

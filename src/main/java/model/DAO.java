@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class DAO {
-  public static final String DBURL = "jdbc:sqlite:TEST.db";
+  public static final String DBURL = "jdbc:sqlite:TT01AVeterinary.db";
   private static Connection db;
   protected static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
